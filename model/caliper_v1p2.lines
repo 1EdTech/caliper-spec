@@ -1,0 +1,796 @@
+Model caliper 2019-08-31 v1p2 "s:Base Document" "t:Caliper Analytics" "r:Markus Gylling, IMS Global"				"IMS Caliper Analytics® is a technical specification that describes a structured set of vocabulary that assists institutions in collecting learning and usage data from digital resources and learning tools. This data can be used to present information to students, instructors, advisers, and administrators in order to drive effective decision making and promote learner success."
+
+	Package AggregateMeasure DataModel
+
+		Class AggregateMeasure Unordered false [Entity]					"A Caliper AggregateMeasure represents an aggregated measure of a learner's use of a learning tool. For example, an AggregateMeasure may represent the total time on task a learner has spent on a learning tool over a period of time."
+			Property type Term 1 "v:AggregateMeasure"				"The string value MUST be set to the Term AggregateMeasure."
+			Property metricValue Decimal 1 null				"A decimal value representing the total curricular progress the actor has made in the context of the application."
+			Property maxMetricValue Decimal 0..1 null				"A decimal value representing the total possible curricular progress the actor can make in the context of the application."
+			Property metric MetricEnum 1 null				"The standard of measurement associated with the progress value. Acceptable values are listed in the Metrics Appendix."
+			Property startedAtTime DateTime 0..1 null				"An ISO 8601 date and time value expressed with millisecond precision that describes when the metric aggregation was commenced. The value MUST be expressed using the format YYYY-MM-DDTHH:mm:ss.SSSZ set to UTC with no offset specified."
+			Property endedAtTime DateTime 0..1 null				"An ISO 8601 date and time value expressed with millisecond precision that describes when the metric aggregation was completed. The value MUST be expressed using the format YYYY-MM-DDTHH:mm:ss.SSSZ set to UTC with no offset specified."
+
+		Class AggregateMeasureCollection Unordered false [Collection]					"A Caliper AggregateMeasureCollection represents an unordered collection of AggregateMeasure entities."
+			Property type Term 1 "v:AggregateMeasureCollection"				"The string value MUST be set to the Term AggregateMeasureCollection."
+			Property items AggregateMeasure 0..* null				"An ordered collection of AggregateMeasure entities. Each array item MUST be expressed either as an object or as a string corresponding to the item’s IRI."
+
+		Class MetricEnum Enumeration false []	
+			Property AssessmentsPassed String 1 null				"Set the AggregateMeasure.metric string value to AssessmentsPassed if the AggregateMeasure represents a count of assessments that have been passed by the learner."
+			Property AssessmentsSubmitted String 1 null				"Set the AggregateMeasure.metric string value to AssessmentsSubmitted if the AggregateMeasure represents a count of assessments that have been submitted by the learner."
+			Property MinutesOnTask String 1 null				"Set the AggregateMeasure.metric string value to MinutesOnTask if the AggregateMeasure represents active time spent by learner utilizing the tool."
+			Property SkillsMastered String 1 null				"Set the AggregateMeasure.metric string value to SkillsMastered if the AggregateMeasure represents a count of learning skills or targets for which the learner has demonstrated understanding."
+			Property StandardsMastered String 1 null				"Set the AggregateMeasure.metric string value to StandardsMastered if the AggregateMeasure represents a count of learning standards or competencies for which the learner has demonstrated understanding."
+			Property UnitsCompleted String 1 null				"Set the AggregateMeasure.metric string value to UnitsCompleted if the AggregateMeasure represents a count of instructional units completed by the learner."
+			Property UnitsPassed String 1 null				"Set the AggregateMeasure.metric string value to UnitsPassed if the AggregateMeasure represents a count of instructional units completed by the learner, submitted for evaluation, and scored with a passing mark."
+			Property WordsRead String 1 null				"Set the AggregateMeasure.metric string value to WordsRead if the AggregateMeasure represents a count of the number of words read by the learner."
+
+	Package Annotation DataModel
+
+		Class Annotation Unordered false [Entity]					"A Caliper Annotation is a generic type that represents a comment, explanation, highlight, mark, note, question or tag linked to a DigitalResource. The act of sharing a DigitalResource with others is also considered a form of annotation. Utilize Annotation only if no suitable subtype exists to represent the annotation being described."
+			Property type Term 1 "v:Annotation"				"The string value MUST be set to the Term Annotation."
+			Property annotator Person 0..1 null				"The Person who created the Annotation. The annotator value MUST be expressed either as an object or as a string corresponding to the annotator's IRI."
+			Property annotated DigitalResource 0..1 null				"The DigitalResource that was annotated by the annotator. The annotated value MUST be expressed either as an object or as a string corresponding to the annotated resource's IRI."
+
+		Class BookmarkAnnotation Unordered false [Annotation]					"A Caliper BookmarkAnnotation represents the act of marking a DigitalResource at a particular location."
+			Property type Term 1 "v:BookmarkAnnotation"				"The string value MUST be set to the Term BookmarkAnnotation."
+			Property bookmarkNotes String 0..1 null				"A string value comprising a plain text rendering of the note that accompanies the bookmark."
+
+		Class HighlightAnnotation Unordered false [Annotation]					"A Caliper HighlightAnnotation represents the act of marking a particular segment of a DigitalResource between two known coordinates."
+			Property type Term 1 "v:HighlightAnnotation"				"The string value MUST be set to the Term HighlightAnnotation."
+			Property selectionText String 0..1 null				"A string value representing a plain-text rendering of the highlighted segment of the annotated DigitalResource."
+
+		Class SharedAnnotation Unordered false [Annotation]					"A Caliper SharedAnnotation represents the act of sharing a reference to a DigitalResource with other agents."
+			Property type Term 1 "v:SharedAnnotation"				"The string value MUST be set to the Term SharedAnnotation."
+			Property withAgents Agent 0..* null				"An ordered collection of one or more Agent entities, typically of type Person, with whom the annotated DigitalResource has been shared. Each array item MUST be expressed either as an object or as a string corresponding to the item's IRI."
+
+		Class TagAnnotation Unordered false [Annotation]					"A Caliper TagAnnotation represents the act of tagging a DigitalResource with tags or labels."
+			Property type Term 1 "v:TagAnnotation"				"The string value MUST be set to the Term TagAnnotation."
+			Property tags String 0..* null				"An ordered collection of one or more string values that represent the tags associated with the annotated DigitalResource."
+
+	Package Assessment DataModel
+
+		Class Assessment Unordered false [AssignableDigitalResource,DigitalResourceCollection]					"A Caliper Assessment represents an assessment instrument such as a test or quiz."
+			Property type Term 1 "v:AssessmentItem"				"The string value MUST be set to the Term Assessment."
+			Property items AssessmentItem 0..* null				"An ordered collection of AssessmentItem entities. Each array item MUST be expressed either as an object or as a string corresponding to the item's IRI."
+
+		Class AssessmentItem Unordered false [AssignableDigitalResource]					"A Caliper AssessmentItem represents a single test question."
+			Property type Term 1 "v:AssessmentItem"				"The string value MUST be set to the Term AssessmentItem."
+			Property isTimeDependent Boolean 0..1 null				"A boolean value indicating whether or not interacting with the item is time dependent."
+
+		Class Attempt Unordered false [Entity]					"A Caliper Attempt provides a count of the number of times an actor has interacted with a DigitalResource along with start time, end time and duration information. An Attempt is generated as the result of an action such as starting an Assessment or Questionnaire."
+			Property type Term 1 "v:Attempt"				"The string value MUST be set to the Term Attempt."
+			Property assignee Person 0..1 null				"The Person who initiated the Attempt. The assignee value MUST be expressed either as an object or as a string corresponding to the assignee's IRI."
+			Property assignable DigitalResource 0..1 null				"The DigitalResource that constitutes the object of the assignment. The assignable value MUST be expressed either as an object or as a string corresponding to the assigned resource's IRI."
+			Property count Integer 0..1 null				"The total number of attempts inclusive of the current attempt that have been registered against the assigned DigitalResource."
+			Property duration Duration 0..1 null				"A time interval that represents the time taken to complete the Attempt. If a duration is specified the value MUST conform to the ISO 8601 duration format."
+			Property startedAtTime DateTime 0..1 null				"An ISO 8601 date and time value expressed with millisecond precision that describes when the Attempt was commenced. The value MUST be expressed using the format YYYY-MM-DDTHH:mm:ss.SSSZ set to UTC with no offset specified."
+			Property endedAtTime DateTime 0..1 null				"An ISO 8601 date and time value expressed with millisecond precision that describes when the Attempt was completed or terminated. The value MUST be expressed using the format YYYY-MM-DDTHH:mm:ss.SSSZ set to UTC with no offset specified."
+
+		Class Response Unordered false [Entity]					"A Caliper Response is a generic type that represents the selected option generated by a Person interacting with a DigitalResource such as an AssessmentItem or QuestionnaireItem. Utilize Response only if no suitable subtype exists to represent the response being described."
+			Property type Term 1 "v:Response"				"The string value MUST be set to the Term Response."
+			Property attempt Attempt 0..1 null				"The associated Attempt. The attempt value MUST be expressed either as an object or as a string corresponding to the attempt's IRI. If an object representation is provided, the Attempt SHOULD reference both the Person who initiated the Response and the relevant DigitalResource such as an AssessmentItem or QuestionnaireItem."
+			Property startedAtTime DateTime 0..1 null				"An ISO 8601 date and time value expressed with millisecond precision that describes when the Response was commenced. The value MUST be expressed using the format YYYY-MM-DDTHH:mm:ss.SSSZ set to UTC with no offset specified."
+			Property endedAtTime DateTime 0..1 null				"An ISO 8601 date and time value expressed with millisecond precision that describes when the Response was completed or terminated. The value MUST be expressed using the format YYYY-MM-DDTHH:mm:ss.SSSZ set to UTC with no offset specified."
+			Property duration Duration 0..1 null				"A time interval that represents the time taken to complete the Response. If a duration is specified the value MUST conform to the ISO 8601 duration format."
+
+		Class DateTimeResponse Unordered false [Response]					"A Caliper DateTimeResponse represents a respondent's response to a DateTimeQuestion."
+			Property type Term 1 "v:DateTimeResponse"				"The string value MUST be set to the Term DateTimeResponse."
+			Property dateTimeSelected DateTime 0..1 null				"The DateTime selected in response to the question."
+
+		Class FillinBlankResponse Unordered false [Response]					"A Caliper FillinBlankResponse represents a response to an AssessmentItem in which a respondent is asked to provide one or more words, expressions or short phrases that correctly completes a statement."
+			Property type Term 1 "v:FillinBlankResponse"				"The string value MUST be set to the Term FillinBlankResponse."
+			Property values String 0..* null				"An ordered collection of one or more string values representing words, expressions or short phrases that constitute the "fill in the blank" response."
+
+		Class MultipleChoiceResponse Unordered false [Response]					"A Caliper MultipleChoiceResponse represents a response to an AssessmentItem in which a respondent is asked to provide the best possible answer from a list of choices."
+			Property type Term 1 "v:MultipleChoiceResponse"				"The string value MUST be set to the Term MultipleChoiceResponse."
+			Property value String 0..1 null				"A string value that represents the selected option."
+
+		Class MultipleResponseResponse Unordered false [Response]					"A Caliper MultipleResponseResponse represents a response to an AssessmentItem in which a respondent is asked to select more than one correct answer from a list of choices."
+			Property type Term 1 "v:MultipleResponseResponse"				"The string value MUST be set to the Term MultipleResponseResponse."
+			Property values String 0..* null				"An ordered collection of one or more selected options MAY be specified"
+
+		Class MultiselectResponse Unordered false [Response]					"A Caliper MultiselectResponse represents a response to a MultiselectQuestion in which the respondent is permitted to choose one or more options from a pre-defined set of responses."
+			Property type Term 1 "v:MultiselectResponse"				"The string value MUST be set to the Term MultiselectResponse."
+			Property selections String 0..* null				"An array of the values representing the rater's selected responses."
+
+		Class OpenEndedResponse Unordered false [Response]					"A Caliper OpenEndedResponse represents a respondent's response to a OpenEndedQuestion."
+			Property type Term 1 "v:OpenEndedResponse"				"The string value MUST be set to the Term OpenEndedResponse."
+			Property value String 0..* null				"the textual value of the response."
+
+		Class RatingScaleResponse Unordered false [Response]					"A Caliper RatingScaleResponse represents a respondent's response to a RatingScaleQuestion."
+			Property type Term 1 "v:RatingScaleResponse"				"The string value MUST be set to the Term RatingScaleResponse."
+			Property selections String 0..* null				"An array of the values representing the rater's selected responses."
+
+		Class SelectTextResponse Unordered false [Response]					"A Caliper SelectTextResponse represents a response to an AssessmentItem in which the respondent is asked to identify text or a mapping from a presented paragraph or list."
+			Property type Term 1 "v:SelectTextResponse"				"The string value MUST be set to the Term SelectTextResponse."
+			Property values String 0..* null				"An ordered collection of one or more selected options."
+
+		Class TrueFalseResponse Unordered false [Response]					"A Caliper TrueFalseResponse represents a response to an AssessmentItem in which only two possible options are permitted (e.g., true/false, yes/no)."
+			Property type Term 1 "v:TrueFalseResponse"				"The string value MUST be set to the Term TrueFalseResponse."
+			Property value String 0..1 null				"A string value that provides the true/false, yes/no binary selection SHOULD be provided."
+
+	Package Assignable DataModel
+
+		Class AssignableDigitalResource Unordered false [DigitalResource]					"A Caliper AssignableDigitalResource is a generic type that represents digital content associated with a graded or ungraded assignment. Utilize AssignableDigitalResource only if no suitable subtype exists to represent the resource being described."
+			Property type Term 1 "v:AssignableDigitalResource"				"The string value MUST be set to the Term AssignableDigitalResource."
+			Property dateToActivate DateTime 0..1 null				"An ISO 8601 date and time value expressed with millisecond precision that describes when the resource was activated. The value MUST be expressed using the format YYYY-MM-DDTHH:mm:ss.SSSZ set to UTC with no offset specified."
+			Property dateToShow DateTime 0..1 null				"An ISO 8601 date and time value expressed with millisecond precision that describes when the resource should be shown or made available to learners. The value MUST be expressed using the format YYYY-MM-DDTHH:mm:ss.SSSZ set to UTC with no offset specified."
+			Property dateToStartOn DateTime 0..1 null				"An ISO 8601 date and time value expressed with millisecond precision that describes when the resource can be started. The value MUST be expressed using the format YYYY-MM-DDTHH:mm:ss.SSSZ set to UTC with no offset specified."
+			Property dateToSubmit DateTime 0..1 null				"An ISO 8601 date and time value expressed with millisecond precision that describes when the resource is to be submitted for evaluation. The value MUST be expressed using the format YYYY-MM-DDTHH:mm:ss.SSSZ set to UTC with no offset specified."
+			Property maxAttempts Integer 0..1 null				"A non-negative integer that designates the number of permitted attempts."
+			Property maxSubmits Integer 0..1 null				"A non-negative integer that designates the number of permitted submissions."
+			Property maxScore Decimal 0..1 null				"A number with a fractional part denoted by a decimal separator that designates the maximum score permitted."
+
+	Package Feedback DataModel
+
+		Class Comment Unordered false [Entity]					"A Caliper Comment models a person's qualitative reactions to a Entity."
+			Property type Term 1 "v:Comment"				"The string value MUST be set to the Term Comment."
+			Property commenter Person 0..1 null				"The Person who provided the comment. The commenter value MUST be expressed either as an object or as a string corresponding to the commenter’s IRI."
+			Property commentedOn Entity 0..1 null				"The Entity which received the comment. The commentedOn value MUST be expressed either as an object or as a string corresponding to the IRI of the resource that was commented on."
+			Property value String 0..1 null				"A string value representing the comment's textual value."
+
+		Class Scale Unordered false [Entity]					"A Caliper Scale is a generic type that represents a scale employed in order to capture some rating. Utilize Scale only if no suitable subtype exists to represent the scale being described."
+			Property type Term 1 "v:Scale"				"The string value MUST be set to the Term Scale."
+
+		Class LikertScale Unordered false [Scale]					"A Caliper LikertScale models a Likert scale employed in order to capture some likert rating."
+			Property type Term 1 "v:LikertScale"				"The string value MUST be set to the Term LikertScale."
+			Property scalePoints Integer 0..1 null				"A integer value used to determine the amount of points on the LikertScale."
+			Property itemLabels String 0..* null				"The ordered list of labels for each point on the scale. The values MUST be cast as strings."
+			Property itemValues String 0..* null				"The ordered list of values for each point on the scale. The values MUST be cast as strings."
+
+		Class MultiselectScale Unordered false [Scale]					"A Caliper MultiselectScale models a scale used to capture one or more rating options."
+			Property type Term 1 "v:MultiselectScale"				"The string value MUST be set to the Term MultiselectScale."
+			Property scalePoints Integer 0..1 null				"A integer value used to determine the amount of points on the MultiselectScale."
+			Property itemLabels String 0..* null				"The ordered list of labels for each point on the scale. The values MUST be cast as strings."
+			Property itemValues String 0..* null				"The ordered list of values for each point on the scale. The values MUST be cast as strings."
+			Property isOrderedSelection Boolean 0..1 null				"Indicates whether the order of the selected items is important."
+			Property minSelections String 0..1 null				"Indicates the minimum number of selections that can be chosen."
+			Property maxSelections String 0..1 null				"Indicates the maximum number of selections that can be chosen."
+
+		Class NumericScale Unordered false [Scale]					"A Caliper NumericScale models a numeric scale used to capture some rating."
+			Property type Term 1 "v:NumericScale"				"The string value MUST be set to the Term NumericScale."
+			Property minLabel String 0..1 null				"The label for the minimum value."
+			Property maxLabel String 0..1 null				"The label for the maximum value."
+			Property minValue Decimal 0..1 null				"A decimal value used to determine the minimum value of the NumericScale."
+			Property maxValue Decimal 0..1 null				"A decimal value used to determine the maximum value of the NumericScale."
+			Property step Decimal 0..1 null				"Indicates the decimal step used for determining the options between the minimum and maximum values."
+
+		Class Rating Unordered false [Entity]					"A Caliper Rating models quantitative reactions to an Entity."
+			Property type Term 1 "v:Rating"				"The string value MUST be set to the Term Rating."
+			Property rater Person 0..1 null				"The Person who provided the Rating. The rater value MUST be expressed either as an object or as a string corresponding to the rater’s IRI."
+			Property rated Entity 0..1 null				"The Entity which received the rating. The rated value MUST be expressed either as an object or as a string corresponding to the rated object's IRI."
+			Property question Question 0..1 null				"The Question used for the Rating. The question value MUST be expressed either as an object or as a string corresponding to the question's IRI."
+			Property selections String 0..* null				"An array of the values representing the rater's selected response."
+			Property ratingComment Comment 0..1 null				"The Comment left with the Rating. The ratingComment value MUST be expressed either as an object or as a string corresponding to the comment’s IRI."
+
+	Package Forum DataModel
+
+		Class Forum Unordered false [DigitalResourceCollection]					"A Caliper Forum represents a channel or virtual space in which group discussions take place. A Forum typically comprises one or more threaded conversations to which members can subscribe, post messages and reply to other messages."
+			Property type Term 1 "v:Forum"				"The string value MUST be set to the Term Forum."
+			Property items Thread 0..* null				"An ordered collection of Thread entities. Each array item MUST be expressed either as an object or as a string corresponding to the item's IRI."
+
+		Class Message Unordered false [DigitalResource]					"A Caliper Message is a digital form of written communication sent to a recipient. A series of messages may constitute a Thread if they share a common subject and are connected by a reply or by date relationships."
+			Property type Term 1 "v:Message"				"The string value MUST be set to the Term Message."
+			Property body String 0..1 null				"A string value comprising a plain-text rendering of the body content of the Message."
+			Property attachments DigitalResource 0..* null				"An ordered collection of one or more DigitalResource entities attached to this Message. Each array item MUST be expressed either as an object or as a string corresponding to the item's IRI."
+			Property replyTo Message 0..1 null				"A Message that represents the post to which this Message is directed in reply. The replyTo value MUST be expressed either as an object or as a string corresponding to the associated message's IRI."
+
+		Class Thread Unordered false [DigitalResourceCollection]					"A Caliper Thread represents a series of one or more messages that share a common subject and are connected by a reply or by date relationships."
+			Property type Term 1 "v:Thread"				"The string value MUST be set to the Term Thread."
+			Property items Message 0..* null				"An ordered collection of Message entities. Each array item MUST be expressed either as an object or as a string corresponding to the item's IRI."
+
+	Package Grading DataModel
+
+		Class Result Unordered false [Entity]					"A Caliper Result represents the current score or grade as recorded in a grade book. The Result score value may represent an adjusted or scaled value and is considered mutable."
+			Property type Term 1 "v:Result"				"The string value MUST be set to the Term Result."
+			Property attempt Attempt 0..1 null				"The associated Attempt. The attempt value MUST be expressed either as an object or as a string corresponding to the attempt's IRI. If an object representation is provided, the Attempt SHOULD reference both the Person making the Attempt and the assigned DigitalResource."
+			Property maxResultScore Decimal 0..1 null				"A number with a fractional part denoted by a decimal separator that designates the maximum result score permitted."
+			Property resultScore Decimal 0..1 null				"A number with a fractional part denoted by a decimal separator that designates the actual result score awarded."
+			Property scoredBy Agent 0..1 null				"The Agent who scored or graded the Attempt. The scoredBy value MUST be expressed either as an object or as a string corresponding to the scorer's IRI."
+			Property comment String 0..1 null				"Plain text feedback provided by the scorer."
+
+	Package Link DataModel
+
+		Class Link Unordered false [Entity]					"The Link entity represents a URL that might be a UI workflow or service endpoint (transient or otherwise), and not necessarily a proper DigitalResource (such as a WebPage or LtiLink)."
+			Property type Term 1 "v:Link"				"The string value MUST be set to Link."
+
+		Class LtiLink Unordered false [DigitalResource]					"The LtiLink entity represents a DigitalResource that must be retrieved from an external tool application via an LTI request message. It is, effectively, a DigitalResource that requires use of LTI for access."
+			Property type Term 1 "v:LtiLink"				"The string value MUST be set to LtiLink."
+			Property messageType String 0..1 null				"If present, the string value MUST be set to the term name of the LTI message type used to gain access to this LTI resource link (including but not limited to, LtiResourceLinkRequest or LtiDeepLinkingRequest, LtiDeepLinkingResponse)."
+
+	Package LisRoles DataModel
+
+		Class LisRolesEnum Enumeration false []	
+			Property Administrator String 1 null
+			Property Administrator#Administrator String 1 null
+			Property Administrator#Developer String 1 null
+			Property Administrator#ExternalDeveloper String 1 null
+			Property Administrator#ExternalSupport String 1 null
+			Property Administrator#ExternalSystemAdministrator String 1 null
+			Property Administrator#Support String 1 null
+			Property Administrator#SystemAdministrator String 1 null
+			Property ContentDeveloper String 1 null
+			Property ContentDeveloper#ContentDeveloper String 1 null
+			Property ContentDeveloper#ContentExpert String 1 null
+			Property ContentDeveloper#ExternalContentExpert String 1 null
+			Property ContentDeveloper#Librarian String 1 null
+			Property Instructor String 1 null
+			Property Instructor#ExternalInstructor String 1 null
+			Property Instructor#Grader String 1 null
+			Property Instructor#GuestInstructor String 1 null
+			Property Instructor#Instructor String 1 null
+			Property Instructor#Lecturer String 1 null
+			Property Instructor#PrimaryInstructor String 1 null
+			Property Instructor#SecondaryInstructor String 1 null
+			Property Instructor#TeachingAssistant String 1 null
+			Property Instructor#TeachingAssistantGroup String 1 null
+			Property Instructor#TeachingAssistantOffering String 1 null
+			Property Instructor#TeachingAssistantSection String 1 null
+			Property Instructor#TeachingAssistantTemplate String 1 null
+			Property Learner String 1 null
+			Property Learner#ExternalLearner String 1 null
+			Property Learner#GuestLearner String 1 null
+			Property Learner#Learner String 1 null
+			Property Learner#NonCreditLearner String 1 null
+			Property Manager String 1 null
+			Property Manager#AreaManager String 1 null
+			Property Manager#CourseCoordinator String 1 null
+			Property Manager#ExternalObserver String 1 null
+			Property Manager#Manager String 1 null
+			Property Manager#Observer String 1 null
+			Property Member String 1 null
+			Property Member#Member String 1 null
+			Property Mentor String 1 null
+			Property Mentor#Advisor String 1 null
+			Property Mentor#ExternalAdvisor String 1 null
+			Property Mentor#ExternalAuditor String 1 null
+			Property Mentor#ExternalLearningFacilitator String 1 null
+			Property Mentor#ExternalMentor String 1 null
+			Property Mentor#ExternalReviewer String 1 null
+			Property Mentor#ExternalTutor String 1 null
+			Property Mentor#LearningFacilitator String 1 null
+			Property Mentor#Mentor String 1 null
+			Property Mentor#Reviewer String 1 null
+			Property Mentor#Tutor String 1 null
+			Property Officer String 1 null
+			Property Officer#Chair String 1 null
+			Property Officer#Secretary String 1 null
+			Property Officer#Treasurer String 1 null
+			Property Officer#Vice-Chair String 1 null
+
+	Package LisStatus DataModel
+
+		Class LisStatusEnum Enumeration false []	
+			Property status#Inactive String 1 null
+			Property status#Active String 1 null
+
+	Package Media DataModel
+
+		Class MediaObject Unordered false [DigitalResource]					"A Caliper MediaObject represents a generic piece of media content. Utilize MediaObject only if no suitable subtype exists to represent the resource being described."
+			Property type Term 1 "v:MediaObject"				"The string value MUST be set to the Term MediaObject."
+			Property duration Duration 0..1 null				"An optional time interval that represents the total time required to view and/or listen to the MediaObject at normal speed. If a duration is specified the value MUST conform to the ISO 8601 duration format."
+
+		Class AudioObject Unordered false [MediaObject]					"A Caliper AudioObject represents an audio or sound file."
+			Property type Term 1 "v:AudioObject"				"The string value MUST be set to the Term AudioObject."
+			Property muted Boolean 0..1 null				"An optional boolean value indicating whether or not the AudioObject has been muted."
+			Property volumeLevel String 0..1 null				"A string value indicating the current volume level."
+			Property volumeMin String 0..1 null				"A string value indicating the minimum volume level permitted."
+			Property volumeMax String 0..1 null				"A string value indicating the maximum volume level permitted."
+
+		Class ImageObject Unordered false [MediaObject]					"A Caliper ImageObject represents an image file."
+			Property type Term 1 "v:ImageObject"				"The string value MUST be set to the Term ImageObject."
+
+		Class VideoObject Unordered false [MediaObject]					"A Caliper VideoObject represents a visual recording stored in digital form."
+			Property type Term 1 "v:VideoObject"				"The string value MUST be set to the Term VideoObject."
+
+		Class MediaLocation Unordered false [DigitalResource]					"A Caliper MediaLocation provides the current playback position in a MediaObject such as an AudioObject or VideoObject."
+			Property type Term 1 "v:MediaLocation"				"The string value MUST be set to the Term MediaLocation."
+			Property currentTime Duration 0..1 null				"A time interval or duration that represents the current playback position measured from the beginning of an AudioObject or VideoObject. If a currentTime is specified the value MUST conform to the ISO 8601 duration format."
+
+	Package Membership DataModel
+
+		Class Membership Unordered false [Entity]					"A Caliper Membership describes the relationship between an Organization and an Agent, typically a Person (i.e., a member) in terms of the roles assigned and current status."
+			Property type Term 1 "v:Membership"				"The string value MUST be set to the Term Membership."
+			Property organization Organization 0..1 null				"The Organization associated with the Membership. The Organization value MUST be expressed either as an object or as a string corresponding to the organization's IRI."
+			Property member Person 0..1 null				"The Person associated with this Membership. The member value MUST be expressed either as an object or as a string corresponding to the member's IRI."
+			Property roles LisRolesEnum 0..* null				"An ordered collection of organizational roles assigned to the member. Role values are limited to the list of Caliper defined role terms. Whenever a subrole is specified, the core context role SHOULD also be included; for example, a role of Instructor#TeachingAssistant should always be accompanied by the Instructor role."
+			Property status LisStatusEnum 0..1 null				"A string value that indicates the current standing of the member. If a status is specified, the value be chosen from the list of Caliper defined statuses."
+
+	Package Organization DataModel
+
+		Class Organization Unordered false [Agent]					"A Caliper Organization represents a formal collection of people organized for some common educational, social or administrative purpose. An Organization can act as an Agent. It can be linked both to a parent Organization and to its members."
+			Property type Term 1 "v:Organization"				"The string value MUST be set to the Term Organization."
+			Property members Agent 0..* null				"An ordered collection of Agent entities. Each array item MUST be expressed either as an object or as a string corresponding to the item's IRI."
+			Property subOrganizationOf Organization 0..* null				"The parent Organization of this Organization. The subOrganizationOf value MUST be expressed either as an object or as a string corresponding to the parent organization's IRI."
+
+		Class CourseOffering Unordered false [Organization]					"A Caliper CourseOffering represents the occurrence of a course during a specified time period."
+			Property type Term 1 "v:CourseOffering"				"The string value MUST be set to the Term CourseOffering."
+			Property courseNumber String 0..1 null				"A string value that constitutes a human-readable identifier for the CourseOffering."
+			Property academicSession String 0..1 null				"A string value that constitutes a human-readable identifier of the designated period in which this CourseOffering occurs."
+
+		Class CourseSection Unordered false [CourseOffering]					"A Caliper CourseSection represents a specific instance of a CourseOffering occurring during a specific semester, term or period."
+			Property type Term 1 "v:CourseSection"				"The string value MUST be set to the Term CourseSection."
+			Property category String 0..1 null				"A string value that characterizes the purpose of the section such as lecture, lab or seminar."
+
+		Class Group Unordered false [Organization]					"A Caliper Group represents an ad-hoc, informal or short-lived collection of people organized for some common educational or social purpose. A Group can act as an Agent. It can be linked both to a parent Organization and to its members."
+			Property type Term 1 "v:Group"				"The string value MUST be set to the Term Group."
+
+	Package Reading DataModel
+
+		Class Document Unordered false [DigitalResource]					"A Caliper Document represents textual content."
+			Property type Term 1 "v:Document"				"The string value MUST be set to the Term Document."
+
+		Class Chapter Unordered false [DigitalResource]					"A Caliper Chapter represents a major sub-division of a piece of digital content."
+			Property type Term 1 "v:Chapter"				"The string value MUST be set to the Term Chapter."
+
+		Class Page Unordered false [DigitalResource]					"A Caliper Page represents an item of paginated content."
+			Property type Term 1 "v:Page"				"The string value MUST be set to the Term Page."
+
+		Class WebPage Unordered false [DigitalResource]					"A Caliper WebPage represents a document containing markup that is suitable for display in a web browser."
+			Property type Term 1 "v:WebPage"				"The string value MUST be set to the Term WebPage."
+
+		Class Frame Unordered false [DigitalResource]					"A Caliper Frame represents a part, portion or segment of a DigitalResource."
+			Property type Term 1 "v:Frame"				"The string value MUST be set to the Term Frame."
+			Property index Integer 0..1 null				"A non-negative integer that represents the position of the Frame."
+
+	Package Score DataModel
+
+		Class Score Unordered false [Entity]					"A Caliper Score represents a "raw" or unadjusted numeric score or grade awarded for a given assignment submission. A grade book SHOULD treat the scoreGiven value as read-only and preserve it."
+			Property type Term 1 "v:Score"				"The string value MUST be set to the Term Score."
+			Property attempt Attempt 0..1 null				"The associated Attempt. The attempt value MUST be expressed either as an object or as a string corresponding to the attempt's IRI. If an object representation is provided, the Attempt SHOULD reference both the Person who generated the Attempt and the assigned DigitalResource."
+			Property maxScore Decimal 0..1 null				"A number with a fractional part denoted by a decimal separator that designates the maximum score permitted."
+			Property scoreGiven Decimal 0..1 null				"A number with a fractional part denoted by a decimal separator that designates the actual score awarded."
+			Property scoredBy Agent 0..1 null				"The Agent who scored or graded the Attempt. The scoredBy value MUST be expressed either as an object or as a string corresponding to the scorer's IRI."
+			Property comment String 0..1 null				"Plain text feedback provided by the scorer."
+
+	Package Search DataModel
+
+		Class Query Unordered false [Entity]					"A Caliper Query models search criteria created by an actor that targets a searchable resource."
+			Property type Term 1 "v:Query"				"The string value MUST be set to the term Query."
+			Property creator Person 0..1 null				"The Person who devised the search terms comprising this Query. The creator value MUST be expressed either as an object or as a string corresponding to the creator's IRI."
+			Property searchTarget Entity 0..1 null				"The Entity, typically a DigitalResource or SoftwareApplication, that is the target of the Query. The resourceSearched value MUST be expressed either as an object or as a string corresponding to the resources's IRI."
+			Property searchTerms String 0..1 null				"The search terms employed by the creator of this Query."
+
+		Class SearchResponse Unordered false [Entity]					"A Caliper SearchResponse models a search engine response to an actor querying a searchable resource."
+			Property type Term 1 "v:SearchResponse"				"The string value MUST be set to the term SearchResponse."
+			Property searchProvider SoftwareApplication 0..1 null				"The SoftwareApplication that is the provider of this SearchResponse. The searchProvider value MUST be expressed either as an object or as a string corresponding to the resources's IRI."
+			Property searchTarget Entity 0..1 null				"The Entity, typically a DigitalResource or SoftwareApplication, that is the target of the search. The resourceSearched value MUST be expressed either as an object or as a string corresponding to the resources's IRI."
+			Property query Query 0..1 null				"The Query submitted by the actor."
+			Property searchResultsItemCount Integer 0..1 null				"A total count of searchResults returned. If the Query submitted returned no results the count equal to zero (0)."
+
+	Package Session DataModel
+
+		Class Session Unordered false [Entity]					"A Caliper Session represents a web application user session."
+			Property type Term 1 "v:Session"				"The string value MUST be set to the Term Session."
+			Property user Person 0..1 null				"The Person who initiated this Session."
+			Property client SoftwareApplication 0..1 null				"The SoftwareApplication that is hosting this Session."
+			Property startedAtTime DateTime 0..1 null				"An ISO 8601 date and time value expressed with millisecond precision that describes when the Session was commenced. The value MUST be expressed using the format YYYY-MM-DDTHH:mm:ss.SSSZ set to UTC with no offset specified."
+			Property endedAtTime DateTime 0..1 null				"An ISO 8601 date and time value expressed with millisecond precision that describes when the Session was completed or terminated. The value MUST be expressed using the format YYYY-MM-DDTHH:mm:ss.SSSZ set to UTC with no offset specified."
+			Property duration Duration 0..1 null				"A time interval that represents the time taken to complete the Session. If a duration is specified the value MUST conform to the ISO 8601 duration format."
+
+		Class LtiSession Unordered false [Session]					"A Caliper LtiSession represents an LTI platform user session."
+			Property type Term 1 "v:LtiSession"				"The string value MUST be set to the Term LtiSession."
+			Property messageParameters AnyObject 0..1 null				"A map of LTI-specified message parameters that provide platform-related contextual information. LTI message parameters of whatever type (i.e., required, recommended, optional, custom and extension) MAY be referenced."
+
+	Package Survey DataModel
+
+		Class Question Unordered false [DigitalResource]					"A Caliper Question is a generic type that represents an interrogative expression designed to elicit information from a respondent, featuring either a closed-end format with a set of predefined responses or an open-ended format. Utilize Question only if no suitable subtype exists to represent the question being described."
+			Property type Term 1 "v:Question"				"The string value MUST be set to the Term Question."
+			Property questionPosed String 0..1 null				"A string value comprising the question posed."
+
+		Class DateTimeQuestion Unordered false [Question]					"A Caliper DateTimeQuestion represents a closed-end question type with the response provided in a date and time format."
+			Property type Term 1 "v:DateTimeQuestion"				"The string value MUST be set to the Term DateTimeQuestion."
+			Property minDateTime DateTime 0..1 null				"A DateTime value used to determine the minimum value allowed."
+			Property maxDateTime DateTime 0..1 null				"A DateTime value used to determine the maximum value allowed."
+			Property minLabel String 0..1 null				"The label for the minimum DateTime."
+			Property maxLabel String 0..1 null				"The label for the maximum value."
+
+		Class MultiselectQuestion Unordered false [Question]					"A Caliper MultiselectQuestion represents a form of a closed-end question type with a pre-defined set of responses where a respondent can choose multiple items in the set."
+			Property type Term 1 "v:MultiselectQuestion"				"The string value MUST be set to the Term MultiselectQuestion."
+			Property itemLabels String 0..* null				"The list of labels that describe the set of selectable question options. Each label MUST be cast as a string."
+			Property itemValues String 0..* null				"The list of values associated with the set of selectable question options. Each value MUST be cast as a string."
+			Property points Integer 0..1 null				"A integer value used to determine the amount of points on the MultiselectQuestion."
+
+		Class OpenEndedQuestion Unordered false [Question]					"A Caliper OpenEndedQuestion represents a question with no pre-defined response. Respondents can record their response in the form of qualitative feedback with no length limit imposed."
+			Property type Term 1 "v:OpenEndedQuestion"				"The string value MUST be set to the Term OpenEndedQuestion."
+
+		Class RatingScaleQuestion Unordered false [Question]					"A Caliper RatingScaleQuestion represents a question that employs a Scale."
+			Property type Term 1 "v:RatingScaleQuestion"				"The string value MUST be set to the Term RatingScaleQuestion."
+			Property scale Scale 0..1 null				"The Scale used in the question. The scale value MUST be expressed either as an object or as a string corresponding to the scale's IRI."
+
+		Class QuestionnaireItem Unordered false [DigitalResource]					"A Caliper QuestionnaireItem represents a Question that is associated with a Questionnaire."
+			Property type Term 1 "v:QuestionnaireItem"				"The string value MUST be set to the Term QuestionnaireItem."
+			Property question Question 0..1 null				"The Question entity posed by the QuestionnaireItem. The Question value MUST be expressed either as an object or as a string corresponding to the question's IRI."
+			Property categories String 0..1 null				"An array of category items comprising the categories the QuestionnaireItem encompasses. Each category item MUST be cast as a string."
+			Property weight Decimal 0..1 null				"A decimal value used to determine the weight of the QuestionnaireItem."
+
+		Class Questionnaire Unordered false [DigitalResourceCollection]					"A Caliper Questionnaire represents a collection of QuestionnaireItem entities that is designed to elicit information from one or more respondents."
+			Property type Term 1 "v:Questionnaire"				"The string value MUST be set to the Term Questionnaire."
+			Property items QuestionnaireItem 0..* null				"An array of one or more QuestionnaireItem entities that together comprise the Questionnaire. The object value MUST be expressed either as an object or as a string corresponding to the resource's IRI."
+
+		Class Survey Unordered false [Collection]					"A Caliper Survey represents a research method for collecting data from a targeted group of respondents. The Survey provides a standardized process for gathering data that utilizes one or more Questionnaire entities."
+			Property type Term 1 "v:Survey"				"The string value MUST be set to the Term Survey."
+			Property items QuestionnaireItem 0..* null				"An array of one or more Questionnaire entities that together comprise the Survey. Each array item MUST be expressed either as an object or as a string corresponding to the Questionnaire resource's IRI."
+
+		Class SurveyInvitation Unordered false [DigitalResource]					"A Caliper SurveyInvitation represents a survey invitation sent to raters."
+			Property type Term 1 "v:SurveyInvitation"				"The string value MUST be set to the Term SurveyInvitation."
+			Property rater Person 0..1 null				"The Person which will rate the Survey. The rater value MUST be expressed either as an object or as a string corresponding to the rater resource’s IRI."
+			Property survey Survey 0..1 null				"The Survey that the invitation is for. The survey value MUST be expressed either as an object or as a string corresponding to the rater resource’s IRI."
+			Property sentCount Integer 0..1 null				"An integer value used to determine the amount of times the invitation was sent to the rater."
+			Property dateSent DateTime 0..1 null				"An ISO 8601 date and time value expressed with millisecond precision that describes when the SurveyInvitation was sent. The value MUST be expressed using the format YYYY-MM-DDTHH:mm:ss.SSSZ set to UTC with no offset specified."
+
+	Package General DataModel
+
+		Class Entity Unordered false []					"A Caliper Entity is a generic type that represents objects that participate in learning-related activities. A variety of Entity subtypes have been defined in order to better describe people, groups, organizations, digital content, courses, software applications, and other objects that constitute the "stuff" of a Caliper Event. Each Entity is provisioned with a modest set of properties or attributes that support description and discovery."
+			Property type Term 1 "v:Entity"				"A string value corresponding to the Term defined for the Entity in the external IMS Caliper JSON-LD context document. For a generic Entity set the type value to the term Entity. If a subtype of Entity is created, set the type to the Term corresponding to the subtype utilized, e.g., Person."
+			Property name String 0..1 null				"A string value comprising a word or phrase by which the Entity is known."
+			Property description String 0..1 null				"A string value comprising a brief, written representation of the Entity."
+			Property dateCreated DateTime 0..1 null				"An ISO 8601 date and time value expressed with millisecond precision that describes when the Entity was created. The value MUST be expressed using the format YYYY-MM-DDTHH:mm:ss.SSSZ set to UTC with no offset specified."
+			Property dateModified DateTime 0..1 null				"An ISO 8601 date and time value expressed with millisecond precision that describes when the Entity was last changed or updated. The value MUST be expressed using the format YYYY-MM-DDTHH:mm:ss.SSSZ set to UTC with no offset specified."
+			Property otherIdentifiers SystemIdentifier 0..* null				"An ordered collection of SystemIdentifier entities that represent other identifiers for this Entity that are known to the Sensor. Each array item MUST be expressed either as an object or as a string corresponding to the item's IRI."
+			Property extensions Namespace 0..1 
+
+		Class Agent Unordered false [Entity]					"A Caliper Agent is a generic type that represents an Entity that can initiate or perform an action. Utilize Agent only if no suitable subtype exists to represent the actor being described."
+			Property type Term 1 "v:Agent"				"The string value MUST be set to the Term Agent."
+
+		Class DigitalResource Unordered false [Entity]					"A Caliper DigitalResource is a generic type that represents digital content. Utilize DigitalResource only if no suitable subtype exists to represent the resource being described."
+			Property type Term 1 "v:DigitalResource"				"The string value MUST be set to the Term DigitalResource."
+			Property storageName String 0..1 null				"The name of resource when stored in a file system."
+			Property mediaType String 0..1 null				"A string value drawn from the list of IANA approved media types and subtypes that identifies the file format of the resource."
+			Property version String 0..1 null				"A string value that designates the current form or version of the resource."
+			Property creators Agent 0..* null				"An ordered collection of Agent entities, typically of type Person, that are responsible for bringing resource into being. Each array item MUST be expressed either as an object or as a string corresponding to the item's IRI."
+			Property keywords String 0..* null				"An ordered collection of one or more string values that represent tags or labels used to identify the resource."
+			Property learningObjectives LearningObjective 0..* null				"An ordered collection of one or more LearningObjective entities that describe what a learner is expected to comprehend or accomplish after engaging with the resource. Each array item MUST be expressed either as an object or as a string corresponding to the item's IRI."
+			Property isPartOf Entity 0..1 null				"A related Entity that includes or incorporates the resource as a part of its whole. The isPartOf value MUST be expressed either as an object or as a string corresponding to the associated entity's IRI."
+			Property datePublished DateTime 0..1 null				"An ISO 8601 date and time value expressed with millisecond precision that provides the publication date of the resource. The value MUST be expressed using the format YYYY-MM-DDTHH:mm:ss.SSSZ set to UTC with no offset specified."
+
+		Class DigitalResourceCollection Unordered false [DigitalResource,Collection]					"A Caliper DigitalResourceCollection represents an ordered collection of DigitalResource entities."
+			Property type Term 1 "v:DigitalResourceCollectio"				"The string value MUST be set to the Term DigitaResourceCollection."
+			Property items DigitalResource 0..* null				"An ordered collection of DigitalResource entities. Each array item MUST be expressed either as an object or as a string corresponding to the item's IRI."
+
+		Class LearningObjective Unordered false [Entity]					"A Caliper LearningObjective represents a brief statement of what a learner should know or be able to perform after completing a unit of instruction or a period of learning."
+			Property type Term 1 "v:LearningObjective"				"The string value MUST be set to the Term LearningObjective."
+
+		Class SoftwareApplication Unordered false [Agent]					"A Caliper SoftwareApplication represents a computer program, application, module, platform or system."
+			Property type Term 1 "v:SoftwareApplication"				"The string value MUST be set to the Term SoftwareApplication."
+			Property host String 0..1 null				"String value that identifies the host of this SoftwareApplication. This property can be used to indicate the back-end service or domain hosting a front-end web application."
+			Property ipAddress String 0..1 null				"String value that, if present, can indicate the IPv4 or IPv6 address of this SoftwareApplication. This property can be used to indicate the user agent (browser) running a front-end web application."
+			Property userAgent String 0..1 null				"String with a value that describes the properties of the user agent hosting this SoftwareApplication. This field can be used to carry the user agent string reported by the browser running a front-end web application."
+			Property version String 0..1 null				"An optional string value that designates the current form or version of this SoftwareApplication."
+
+		Class Person Unordered false [Agent]					"A Caliper Person represents a human being, alive or deceased, real or imaginary."
+			Property type Term 1 "v:Person"				"The string value MUST be set to the Term Person."
+
+		Class Collection Unordered false [Entity]					"A Caliper Collection is a generic type that represents an unordered collection of entities. Utilize Collection only if no suitable subtype exists to represent the collection being described."
+			Property type Term 1 "v:Collection"				"The string value MUST be set to the Term Collection."
+			Property items AnyObject 0..* null				"An ordered collection of entities. Each array item MUST be expressed either as an object or as a string corresponding to the resource's IRI."
+
+		Class Map Unordered false []	
+
+		Class AnyObject Unordered false []	
+
+	Package PrimitiveTypes PrimitiveTypes
+
+		Class String PrimitiveType false []	
+
+		Class PositiveInteger PrimitiveType false []	
+
+		Class Integer PrimitiveType false []	
+
+		Class AnyURI PrimitiveType false []	
+
+		Class Boolean PrimitiveType false []	
+
+		Class DateTime PrimitiveType false []	
+
+		Class Namespace PrimitiveType false []	
+
+		Class Duration PrimitiveType false []	
+
+		Class Decimal PrimitiveType false []	
+
+	Package DerivedTypes DerivedTypes
+
+		Class IRI DerivedType false [AnyURI]	
+
+		Class URL DerivedType false [AnyURI]	
+
+		Class NormalizedString DerivedType false [String]	
+
+		Class UUID DerivedType false [String]	
+
+		Class Term DerivedType false [NormalizedString]	
+
+	Package SystemIdentifier DataModel
+
+		Class SystemIdentifierTypeEnum Enumeration false []					"A Caliper SystemIdentifier represents a single, system-local identifier for a Caliper Entity."
+			Property AccountUserName String 1 null				"Set the SystemIdentifier.identifierType string value to AccountUserName if the SystemIdentifier is the username of a system account."
+			Property EmailAddress String 1 null				"Set the SystemIdentifier.identifierType string value to EmailAddress if the SystemIdentifier is an email address."
+			Property LisSourcedId String 1 null				"Set the SystemIdentifier.identifierType string value to LisSourcedId if the SystemIdentifier is a LIS sourcedId."
+			Property LtiContextId String 1 null				"Set the SystemIdentifier.identifierType string value to LtiContextId if the SystemIdentifier is an LTI context.id."
+			Property LtiDeploymentId String 1 null				"Set the SystemIdentifier.identifierType string value to LtiDeploymentId if the SystemIdentifier is an LTI deployment_id."
+			Property LtiToolId String 1 null				"Set the SystemIdentifier.identifierType string value to LtiToolId if the SystemIdentifier is an LTI tool_id."
+			Property LtiPlatformId String 1 null				"Set the SystemIdentifier.identifierType string value to LtiPlatformId if the SystemIdentifier is an LTI tool_platform.guid."
+			Property LtiUserId String 1 null				"Set the SystemIdentifier.identifierType string value to LtiUserId if the SystemIdentifier is an LTI user_id."
+			Property OneRosterSourcedId String 1 null				"Set the SystemIdentifier.identifierType string value to OneRosterSourcedId if the SystemIdentifier is a One Roster sourcedId."
+			Property Other String 1 null				"Set the SystemIdentifier.identifierType string value to Other if the SystemIdentifier has no matching enumerated type."
+			Property SisSourcedId String 1 null				"Set the SystemIdentifier.identifierType string value to SisSourcedId if the SystemIdentifier is a student information system (SIS) sourcedId."
+			Property SystemId String 1 null				"Set the SystemIdentifier.identifierType string value to SystemId if the SystemIdentifier is a system identifier."
+
+		Class SystemIdentifier Unordered false []					"A Caliper SystemIdentifier represents a single, system-local identifier for a Caliper Entity."
+			Property type Term 1 "v:SystemIdentifier"				"The string value MUST be set to the Term SystemIdentifier."
+			Property identifier String 1 null				"Opaque string representing the system identifier value."
+			Property identifierType SystemIdentifierTypeEnum 1 null				"The string value MUST be set to the System Identifier Type constants that describes the identifier."
+			Property source SoftwareApplication 0..1 null				"The SoftwareApplication identified as the source (e.g., the creator or owner) of the system identifier."
+
+	Package Events DataModel
+
+		Class QuestionnaireEvent Unordered false [Event]					"A Caliper QuestionnaireEvent models activities associated with respondents or raters starting and submitting a Questionnaire. "
+			Property type Term 1 "v:QuestionnaireEvent"				"The string value MUST be set to QuestionnaireEvent."
+			Property actor Person 1 null				"The Person who initiated the action."
+			Property action Action 1 null				"The action or predicate that binds the actor or subject to the object. The value range is limited to the actions: Started, or Submitted."
+			Property object Questionnaire 1 null				"The Questionnaire that the actor is taking."
+
+		Class SurveyInvitationEvent Unordered false [Event]					"A Caliper SurveyInvitationEvent models activities associated with calls to participate in a Survey. "
+			Property type Term 1 "v:SurveyInvitationEvent"				"The string value MUST be set to SurveyInvitationEvent."
+			Property actor Person 1 null				"The Person who initiated the action."
+			Property action Action 1 null				"The action or predicate that binds the actor or subject to the object. The value range is limited to the actions: Accepted, Declined, or Sent."
+			Property object SurveyInvitation 1 null				"The SurveyInvitation to which the actor is sending out or responding to."
+
+		Class MediaEvent Unordered false [Event]					"A Caliper MediaEvent models interactions between learners and rich content such as audio, images, and video. "
+			Property type Term 1 "v:MediaEvent"				"The string value MUST be set to the Term MediaEvent."
+			Property actor Person 1 null				"The Person who initiated the action."
+			Property action Action 1 null				"The action or predicate that binds the actor or subject to the object. The value range is limited to the Started, Ended, Paused, Resumed, Restarted, ForwardedTo, JumpedTo, ChangedResolution, ChangedSize, ChangedSpeed, ChangedVolume, EnabledClosedCaptioning, DisabledClosedCaptioning, EnteredFullScreen, ExitedFullScreen, Muted, Unmuted, OpenedPopout, and ClosedPopout actions only."
+			Property object MediaObject 1 null				"The MediaObject or a subtype that constitutes the object of the interaction."
+			Property target MediaLocation 0..1 null				"If the MediaEvent object is an AudioObject or VideoObject, a MediaLocation SHOULD be specified in order to provide the currentTime in the audio or video stream that marks the action. If the currentTime is specified, the value MUST be an ISO 8601 formatted duration, e.g., "PT30M54S"."
+
+		Class ForumEvent Unordered false [Event]					"A Caliper ForumEvent models learners and others participating in online forum communities. Forums typically encompass one or more threads or topics to which members can subscribe, post messages, and reply to other messages if a threaded discussion is permitted. "
+			Property type Term 1 "v:ForumEvent"				"The string value MUST be set to the Term ForumEvent."
+			Property actor Person 1 null				"The Person who initiated the action."
+			Property action Action 1 null				"The action or predicate that binds the actor or subject to the object. The value range is limited to the Subscribed and Unsubscribed actions only."
+			Property object Forum 1 null				"The Forum that comprises the object of this interaction."
+
+		Class AssignableEvent Unordered false [Event]					"A Caliper AssignableEvent models activities associated with the assignment of digital content assigned to a learner for completion. "
+			Property type Term 1 "v:AssignableEvent"				"The string value MUST be set to the Term AssignableEvent."
+			Property actor Person 1 null				"The Person who initiated the action."
+			Property action Action 1 null				"The action or predicate that binds the actor or subject to the object. The value range is limited to the Activated, Deactivated, Started, Completed, Submitted, and Reviewed actions only."
+			Property object AssignableDigitalResource 1 null				"The AssignableDigitalResource that constitutes the object of the interaction."
+			Property target Frame 0..1 null				"A Frame that represents a particular segment or location within the object."
+			Property generated Attempt 0..1 null				"For Started, Completed and Reviewed actions, the actor's Attempt SHOULD be specified."
+
+		Class SessionEvent Unordered false [Event]					"A Caliper SessionEvent models the creation and subsequent termination of a user session established by a Person interacting with a SoftwareApplication. "
+			Property type Term 1 "v:SessionEvent"				"The string value MUST be set to the Term SessionEvent."
+			Property actor Person 1 null				"The Agent who initiated the action. For LoggedIn and LoggedOut actions a Person MUST be specified as the actor. For a TimedOut action a SoftwareApplication MUST be specified as the actor."
+			Property action Action 1 null				"The action or predicate that binds the actor or subject to the object. The value range is limited to the LoggedIn, LoggedOut, and TimedOut actions only."
+			Property object Session 1 null				"For LoggedIn and LoggedOut actions a SoftwareApplication MUST be specified as the object. For a TimedOut action the Session MUST be specified as the object."
+			Property target DigitalResource 0..1 null				"When logging in to a SoftwareApplication, if the actor is attempting to access a particular DigitalResource it MAY be designated as the target of the interaction."
+			Property referrer DigitalResource 0..1 null				"The DigitalResource or SoftwareApplication that constitutes the referring context MAY be specified as the referrer."
+
+		Class AssessmentItemEvent Unordered false [Event]					"A Caliper AssessmentItemEvent models a learner's interaction with an individual AssessmentItem. "
+			Property type Term 1 "v:AssessmentItemEvent"				"The string value MUST be set to the Term AssessmentItemEvent."
+			Property actor Person 1 null				"The Person who initiated the action."
+			Property action Action 1 null				"The action or predicate that binds the actor or subject to the object. The value range is limited to the Started, Skipped, and Completed actions only."
+			Property object AssessmentItem 1 null				"The object value MUST be expressed either as an object or as a string corresponding to the object's IRI."
+			Property generated Response 0..1 null				"For a completed action a generated Response or a subtype."
+			Property referrer AssessmentItem 0..1 null				"The previous AssessmentItem attempted MAY be specified as the referrer."
+
+		Class FeedbackEvent Unordered false [Event]					"A Caliper FeedbackEvent models a Person providing informal feedback on an Entity, typically a DigitalResource or another Person. "
+			Property type Term 1 "v:FeedbackEvent"				"The string value MUST be set to the Term FeedbackEvent."
+			Property actor Person 1 null				"The Person who initiated the action."
+			Property action Action 1 null				"The action or predicate that binds the actor or subject to the object. The value range is limited to the Commented and Ranked actions only."
+			Property object Entity 1 null				"The Entity that is the target of the feedback."
+			Property target Frame 0..1 null				"If the object of the feedback is a particular segment of a DigitalResource use a Frame to mark its location."
+			Property generated Rating 0..1 null				"The Rating or Comment entity that describes the feedback provided. If the action is Ranked then the generated value MUST be expressed as a Rating. If the action is Commented then the generated value MUST be expressed as a Comment."
+
+		Class ThreadEvent Unordered false [Event]					"A Caliper ThreadEvent models an actor interacting with a Forum thread or topic. "
+			Property type Term 1 "v:ThreadEvent"				"The string value MUST be set to the term ThreadEvent."
+			Property actor Person 1 null				"The Person who initiated the action."
+			Property action Action 1 null				"The action or predicate that binds the actor or subject to the object. The value range is limited to the MarkedAsRead and MarkedAsUnRead actions only."
+			Property object Thread 1 null				"The Thread that constitutes the object of the interaction."
+
+		Class SearchEvent Unordered false [Event]					"A Caliper SearchEvent models a Person querying a resource for information, typically a DigitalResource or SoftwareApplication. A SearchResponse may be referenced using the generated property. "
+			Property type Term 1 "v:SearchEvent"				"The string value MUST be set to the term SearchEvent."
+			Property actor Person 1 null				"The Person who initiated the action."
+			Property action Action 1 null				"The action or predicate that binds the actor or subject to the object. The value range is limited to the Searched action only."
+			Property object Entity 1 null				"The Entity, typically a DigitalResource or SoftwareApplication, that is the target of the search."
+			Property generated SearchResponse 0..1 null				"The SearchResponse generated by the search provider that describes the search criteria, count of search results returned (if any), and references to the search result items (if any) returned by the search."
+
+		Class ResourceManagementEvent Unordered false [Event]					"A Caliper ResourceManagementEvent models a Person managing an Entity. "
+			Property type Term 1 "v:ResourceManagementEvent"				"The string value MUST be set to ResourceManagementEvent."
+			Property actor Person 1 null				"The Person who initiated the action."
+			Property action Action 1 null				"The action or predicate that binds the actor or subject to the object. The value range is limited to the Archived, Copied, Created, Deleted, Described, Downloaded, Modified, Printed, Published, Restored, Retrieved, Saved, Unpublished, and Uploaded actions only."
+			Property object DigitalResource 1 null				"The DigitalResource that is being managed."
+			Property generated DigitalResource 1 null				"The DigitalResource that was generated by the Copied action."
+
+		Class ViewEvent Unordered false [Event]					"A Caliper ViewEvent models an actor's examination of digital content whenever the activity emphasizes thoughtful observation or study as opposed to the mere retrieval of a resource. "
+			Property type Term 1 "v:ViewEvent"				"The string value MUST be set to ViewEvent."
+			Property actor Person 1 null				"The Person who initiated the action."
+			Property action Action 1 null				"The action or predicate that binds the actor or subject to the object. The value range is limited to the actions: Viewed."
+			Property object DigitalResource 1 null				"The Questionnaire or QuestionnaireItem that the actor viewed."
+
+		Class GradeEvent Unordered false [Event]					"A Caliper GradeEvent models scoring or grading activities performed by an Agent, typically a Person or a SoftwareApplication. "
+			Property type Term 1 "v:GradeEvent"				"The string value MUST be set to the Term GradeEvent."
+			Property actor Agent 1 null				"An Agent, typically Person or SoftwareApplication, MUST be specified as the actor."
+			Property action Action 1 null				"The action or predicate that binds the actor or subject to the object. The value range is limited to the Graded action only."
+			Property object Attempt 1 null				"The completed Attempt."
+			Property generated Score 0..1 null				"The generated Score SHOULD be provided."
+
+		Class ToolUseEvent Unordered false [Event]					"A Caliper ToolUseEvent models a Person using a learning tool in a way that the tool's creators have determined is an indication of a learning interaction. A ToolUseEvent may include information on the aggregate time or progress the Person has made in the learning tool. "
+			Property type Term 1 "v:ToolUseEvent"				"The string value MUST be set to the Term ToolUseEvent."
+			Property actor Person 1 null				"The Person who initiated the action."
+			Property action Action 1 null				"The action or predicate that binds the actor or subject to the object. The value range is limited to the Used action only."
+			Property object SoftwareApplication 1 null				"The SoftwareApplication that constitutes the object of the interaction."
+			Property target SoftwareApplication 0..1 null				"A SoftwareApplication that represents a particular capability or feature provided by the object."
+			Property generated AggregateMeasureCollection 0..1 null				"An AggregateMeasureCollection created or generated as a result of the interaction. Note that if the sender of the event wants to send aggregate measure information as part of this ToolUseEvent it should, by best practice, send a single AggregateMeasureCollection as the generated value."
+
+		Class Event Unordered false []					"For a complete list of Events, see Appendix A A Caliper Event is a generic type that describes the relationship established between an actor and an object, formed as a result of a purposeful action undertaken by the actor at a particular moment in time and within a given learning context. The Event properties actor, action and object form a compact data structure that resembles an RDF Triple linking a subject to an object via a predicate. A learner starting an assessment, annotating a reading, pausing a video, or posting a message to a forum, are examples of learning activities that Caliper models as events. Caliper defines a number of Event subtypes, each scoped to a particular activity domain and distinguishable by a type attribute. The type value is a string that MUST match the Term specified for the Event by the Caliper information model (e.g. "MessageEvent"). Each Event instance is assigned a 128-bit long universally unique identifier (UUID) formatted as a URN per [[RFC4122]], which describes a URN namespace for UUIDs. The information model also seeks to describe the learning environment or context in which a learning activity is situated. Group affiliation, membership roles and status, recent navigation history, supporting technology and session information can all be optionally represented. An Entity generated as a result of the interaction between an action and an object can also be described; annotating a piece of digital content and producing an Annotation is one such example. An extensions property is also provided so that implementers can add custom attributes not described by the model. "
+			Property id UUID 1 null				"The emitting application MUST provision the Event with a UUID. A version 4 UUID SHOULD be generated. The UUID MUST be expressed as a URN using the form "urn:uuid:<UUID>" per [[RFC4122]]."
+			Property type Term 1 "v:Event"				"A string value corresponding to the Term defined for the Event in the external IMS Caliper JSON-LD context document. For a generic Event set the type to the string value Event. If a subtype of Entity is created, set the type to the Term corresponding to the subtype utilized, e.g., NavigationEvent."
+			Property profile Profile 0..1 null				"A string value corresponding to the Profile Term value defined for the Profile that governs the rules of interpretation for this Event. The range of Profile values is limited to the set of profiles described in this specification and any profile extension specifications extending this specification. Only one Profile Term value may be specified per Event. For a generic Event set the profile property value to the string term GeneralProfile."
+			Property actor Agent 1 null				"The Agent who initiated the Event, typically though not always a Person."
+			Property action Action 1 null				"The action or predicate that binds the actor or subject to the object. The action range is limited to the set of actions described in this specification or associated profiles and may be further constrained by the chosen Event type. Only one action Term may be specified per Event."
+			Property object Entity 1 null				"The Entity that comprises the object of the interaction."
+			Property eventTime DateTime 1 null				"An ISO 8601 date and time value expressed with millisecond precision that indicates when the Event occurred. The value MUST be expressed using the format YYYY-MM-DDTHH:mm:ss.SSSZ set to UTC with no offset specified."
+			Property edApp SoftwareApplication 0..1 null				"A SoftwareApplication that constitutes the application context."
+			Property generated Entity 0..1 null				"An Entity created or generated as a result of the interaction."
+			Property target Entity 0..1 null				"An Entity that represents a particular segment or location within the object."
+			Property referrer Entity 0..1 null				"An Entity that represents the referring context. A SoftwareApplication or DigitalResource will typically constitute the referring context."
+			Property group Organization 0..1 null				"An Organization that represents the group context."
+			Property membership Membership 0..1 null				"The relationship between the action and the group in terms of roles assigned and current status."
+			Property session Session 0..1 null				"The current user Session."
+			Property federatedSession LtiSession 0..1 null				"If the Event occurs within the context of an LTI platform launch, the tool's LtiSession MAY be referenced."
+			Property extensions Namespace 0..1 
+
+		Class NavigationEvent Unordered false [Event]					"A Caliper NavigationEvent models an actor traversing a network of digital resources. "
+			Property type Term 1 "v:NavigationEvent"				"The string value MUST be set to NavigationEvent."
+			Property actor Person 1 null				"The Person who initiated the action."
+			Property action Action 1 null				"The action or predicate that binds the actor or subject to the object. The value range is limited to the actions: NavigatedTo."
+			Property object DigitalResource 1 null				"The DigitalResource or SoftwareApplication to which the actor navigated."
+			Property target DigitalResource 0..1 null				"The DigitalResource that represents the particular part or location of the object being navigated to."
+			Property referrer DigitalResource 0..1 null				"The DigitalResource or SoftwareApplication that constitutes the referring context."
+
+		Class QuestionnaireItemEvent Unordered false [Event]					"A Caliper QuestionnaireItemEvent models activities associated with respondents or raters starting, completing, or skipping a QuestionnaireItem. "
+			Property type Term 1 "v:QuestionnaireItemEvent"				"The string value MUST be set to QuestionnaireItemEvent."
+			Property actor Person 1 null				"The Person who initiated the action."
+			Property action Action 1 null				"The action or predicate that binds the actor or subject to the object. The value range is limited to the actions: Started, Skipped, or Completed."
+			Property object QuestionnaireItem 1 null				"The QuestionnaireItem started, attempted, or skipped by the actor."
+			Property generated Response 0..1 null				"For a Completed action a generated Response MAY be referenced."
+
+		Class AnnotationEvent Unordered false [Event]					"A Caliper AnnotationEvent models the annotating of digital content. The resulting Annotation is also described and is subtyped for greater type specificity. "
+			Property type Term 1 "v:AnnotationEvent"				"The string value MUST be set to the Term AnnotationEvent."
+			Property actor Person 1 null				"The Person who initiated the action."
+			Property action Action 1 null				"The action or predicate that binds the actor or subject to the object. The value range is limited to the Bookmarked, Highlighted, Shared, and Tagged actions only."
+			Property object DigitalResource 1 null				"The annotated DigitalResource that constitutes the object of the interaction."
+			Property target Frame 0..1 null				"A Frame that represents a particular segment or location within the object."
+			Property generated Annotation 0..1 null				"The generated Annotation or a subtype."
+
+		Class MessageEvent Unordered false [Event]					"A Caliper MessageEvent describes a Person posting a Message or marking a post as either read or unread. "
+			Property type Term 1 "v:MessageEvent"				"The string value MUST be set to the Term MessageEvent."
+			Property actor Person 1 null				"The Person who initiated the action."
+			Property action Action 1 null				"The action or predicate that binds the actor or subject to the object. The value range is limited to the MarkedAsRead, MarkedAsUnRead, and Posted actions only."
+			Property object Message 1 null				"The Message that constitutes the object of the interaction. If the object represents a Message posted in reply to a previous post, the prior post prompting the Message SHOULD be referenced using the Message replyTo property."
+
+		Class AssessmentEvent Unordered false [Event]					"A Caliper AssessmentEvent models learner interactions with assessments instruments such as online tests or quizzes. "
+			Property type Term 1 "v:AssessmentEvent"				"The string value MUST be set to the Term AssessmentEvent."
+			Property actor Person 1 null				"The Person who initiated the action."
+			Property action Action 1 null				"The action or predicate that binds the actor or subject to the object. The value range is limited to the Started, Paused, Resumed, Restarted, Reset, and Submitted actions only."
+			Property object Assessment 1 null				"The object value MUST be expressed either as an object or as a string corresponding to the object's IRI."
+			Property generated Attempt 0..1 null				"The generated value MUST be expressed either as an object or as a string corresponding to the generated entity's IRI."
+
+		Class SurveyEvent Unordered false [Event]					"A Caliper SurveyEvent models activities associated with calls to participate in a Survey. "
+			Property type Term 1 "v:SurveyEvent"				"The string value MUST be set to SurveyEvent."
+			Property actor Person 1 null				"The Person who initiated the action."
+			Property action Action 1 null				"The action or predicate that binds the actor or subject to the object. The value range is limited to the actions: OptedIn or OptedOut. ."
+			Property object Survey 1 null				"The Survey to which the actor is opting into or out of."
+
+		Class ToolLaunchEvent Unordered false [Event]					"The ToolLaunchEvent models an interaction between a Person and external Tool (SoftwareApplication), at a given time and in a given context. It also provides the ability to model a "return response", which in the context of LTI [[LTI-13]] typically consists of a redirect URL or a specific response message, as defined in for example LTI Deep Linking [[LTI-DL-20]]. "
+			Property type Term 1 "v:ToolLaunchEvent"				"The string value MUST be set to ToolLaunchEvent."
+			Property actor Person 1 null				"The Person who initiated the action."
+			Property action Action 1 null				"The action or predicate that binds the actor or subject to the object. The value range is limited to either the Launched or Returned actions."
+			Property object SoftwareApplication 1 null				"The SoftwareApplication that is the target of the actor's launch activity."
+			Property generated DigitalResource 0..1 null				"In the case that the workflow comes with a resource intended for the receiver of the workflow message associated with this event (for example, a file, or image, or LTI resource link for the receiver to embed within its system), this property can carry its representation as a Caliper DigitalResource or, more likely, one of its specific subtypes."
+			Property target Link 0..1 null				"The fully qualified URL to which the workflow was redirected. In the case of the Launched action, this would be the fully qualified entry-point on the external tool to which the platform launches. In the case of the Returned action, this would be the fully qualified entry-point on the platform to which the tool is redirecting the workflow after user activity from the original launch finishes (this could be the launch_presentation_return_url in the case of a simple LTI Resource Link request; it could also be the deep_link_return_url in the case of a Deep Linking Response message)."
+			Property federatedSession LtiSession 1 null				"The Platform's session, constituting part of the tool launch context."
+
+	Package Actions DataModel
+
+		Class Action Enumeration false []	
+			Property Showed Term 1 "v:Showed"				"The Showed action signals that an Entity was revealed or made accessible to enable discovery. Inverse of Hid."
+			Property MarkedAsRead Term 1 "v:MarkedAsRead"				"The MarkedAsRead action signals that an Entity or some textual content was labeled as read or consumed. Inverse of MarkedAsUnread."
+			Property Returned Term 1 "v:Returned"				"The Returned action signals that a workflow that started with the Launched action was completed, with the Agent being directed back to an original location or system."
+			Property NavigatedTo Term 1 "v:NavigatedTo"				"The NavigatedTo action signals that an Agent directed a movement from one location to another."
+			Property LoggedOut Term 1 "v:LoggedOut"				"The LoggedOut action signals that an authenticated visit to a SoftwareApplication was ended. Inverse of LoggedIn."
+			Property ForwardedTo Term 1 "v:ForwardedTo"				"The ForwardedTo action signals that an Entity was sent or directed to another location."
+			Property Launched Term 1 "v:Launched"				"The Launched action signals that a system has commenced a workflow that sends an Agent from its own domain out to an external system."
+			Property JumpedTo Term 1 "v:JumpedTo"				"The JumpedTo action signals that the focus was changed from one location or state of an Entity to another."
+			Property Started Term 1 "v:Started"				"The Started action signals that some process or task was begun or initiated."
+			Property DisabledClosedCaptioning Term 1 "v:DisabledClosedCaptioning"				"The DisabledClosedCaptioning action signals that the option for visual display of plain text transcriptions of audio content was turned off. Inverse of EnabledClosedCaptioning."
+			Property Posted Term 1 "v:Posted"				"The Posted action signals that some Entity was made accessible in a shared location."
+			Property OptedOut Term 1 "v:OptedOut"				"The OptedOut action signals that a Person declined to participate in an activity or complete a task. Inverse of OptedIn."
+			Property Published Term 1 "v:Published"				"The Published action signals that an Entity was made available for public consumption."
+			Property MarkedAsUnread Term 1 "v:MarkedAsUnread"				"The MarkedAsUnread action signals that an Entity or some textual content was labeled as not yet read or consumed. Inverse of MarkedAsRead."
+			Property Saved Term 1 "v:Saved"				"The Saved action signals that the current state of an Entity was stored for future use."
+			Property Restarted Term 1 "v:Restarted"				"The Restarted action signals that a process or task was begun again from some initial location, following a previous run or attempt."
+			Property Archived Term 1 "v:Archived"				"The Archived action signals that an Entity was put into long-term storage."
+			Property Restored Term 1 "v:Restored"				"The Restored action signals that an archived Entity was retrieved from long-term storage. Inverse of Archived."
+			Property Linked Term 1 "v:Linked"				"The Linked action signals that two or more entities were connected by way of a URI."
+			Property Deleted Term 1 "v:Deleted"				"The Deleted action signals that a DigitalResource was removed permanently from a system. Inverse of Created."
+			Property Muted Term 1 "v:Muted"				"The Muted action signals that the sound associated with an Entity was cut off or silenced. Inverse of Unmuted."
+			Property EnabledClosedCaptioning Term 1 "v:EnabledClosedCaptioning"				"The EnabledClosedCaptioning action signals that the option for visual display of plain text transcriptions of audio content was turned on. Inverse of DisabledClosedCaptioning."
+			Property ChangedResolution Term 1 "v:ChangedResolution"				"The ChangedResolution action signals that a visual display's representation of detail (measured by pixel density) was changed or adjusted."
+			Property LoggedIn Term 1 "v:LoggedIn"				"The LoggedIn action signals that authenticated access to a SoftwareApplication was granted. Inverse of LoggedOut."
+			Property Uploaded Term 1 "v:Uploaded"				"The Uploaded action signals that a copy of a DigitalResource was transferred from a remote or secondary system to a central or primary system. Inverse of Downloaded."
+			Property Commented Term 1 "v:Commented"				"The Commented action signals that qualitative feedback in the form of a Comment was provided."
+			Property Declined Term 1 "v:Declined"				"The Declined action signals that a negative reply or refusal was given with regard to some Entity. Inverse of Accepted."
+			Property Classified Term 1 "v:Classified"				"The Classified action signals that some Entity was placed or assigned to some class, group, kind, or type."
+			Property Abandoned Term 1 "v:Abandoned"				"The Abandoned action signals that some Entity was left behind or unfinished."
+			Property Searched Term 1 "v:Searched"				"The Searched action signals that a Person has queried an Entity to find information or other entities."
+			Property Downloaded Term 1 "v:Downloaded"				"The Downloaded action signals that a copy of a DigitalResource was transferred from a central or primary system to a remote or secondary system. Inverse of Uploaded."
+			Property Used Term 1 "v:Used"				"The Used action signals that an Agent utilized or employed an Entity for some purpose."
+			Property Resumed Term 1 "v:Resumed"				"The Resumed action signals that a process or task was started midway through after it was previously stopped at that place. Inverse of Paused."
+			Property Printed Term 1 "v:Printed"				"The Printed action signals that a mechanical process was invoked in order to produce a physical representation of an Entity."
+			Property ChangedSize Term 1 "v:ChangedSize"				"The ChangedSize action signals that the magnitude of some Entity was modified."
+			Property Submitted Term 1 "v:Submitted"				"The Submitted action signals that some Entity was formally turned in for review or analysis."
+			Property OptedIn Term 1 "v:OptedIn"				"The OptedIn action signals that a Person agreed to participate in an activity or complete a task. Inverse of OptedOut."
+			Property Questioned Term 1 "v:Questioned"				"The Questioned action signals that some request for information was made."
+			Property Completed Term 1 "v:Completed"				"The Completed action signals that an Entity, or the work or activity associated with it, was finished."
+			Property Ended Term 1 "v:Ended"				"The Ended action signals that a process associated with an Entity concluded or was brought to a conclusion. Inverse of Started."
+			Property ExitedFullScreen Term 1 "v:ExitedFullScreen"				"The ExitedFullScreen action signals that a view mode that uses all of the available display surface of a screen was left or closed. Inverse of EnteredFullScreen."
+			Property Unpublished Term 1 "v:Unpublished"				"The Unpublished action signals that a published Entity was rendered unavailable for public consumption. Inverse of Published."
+			Property Hid Term 1 "v:Hid"				"The Hid action signals that an Entity was collapsed or removed from view to prevent discovery. Inverse of Showed."
+			Property Removed Term 1 "v:Removed"				"The Removed action signals the taking away or disposal of some Entity. Inverse of Added."
+			Property OpenedPopout Term 1 "v:OpenedPopout"				"The OpenedPopout action signals that a video popout was opened. Inverse of ClosedPopout."
+			Property Shared Term 1 "v:Shared"				"The Shared action signals that a reference to an Entity was communicated so that others might experience or learn from the Entity."
+			Property Subscribed Term 1 "v:Subscribed"				"The Subscribed action signals that a request was made for the regular delivery of information. Inverse of Unsubscribed."
+			Property Tagged Term 1 "v:Tagged"				"The Tagged action signals that an Entity or content was given a label to assist with future discovery and identification."
+			Property Reset Term 1 "v:Reset"				"The Reset action signals that an Entity was refreshed or returned to some initial state."
+			Property Unsubscribed Term 1 "v:Unsubscribed"				"The Unsubscribed action signals that a request was made for the regular delivery of information to be stopped or ceased. Inverse of Subscribed."
+			Property Copied Term 1 "v:Copied"				"The Copied action signals that an Entity was duplicated."
+			Property Activated Term 1 "v:Activated"				"The Activated action signals that some Entity was made active or put to work. Inverse of Deactivated."
+			Property Viewed Term 1 "v:Viewed"				"The Viewed action signals that a Person examined or studied a particular Entity."
+			Property Identified Term 1 "v:Identified"				"The Identified action signals that the essence or legitimacy of an Entity was determined or established."
+			Property Ranked Term 1 "v:Ranked"				"The Ranked action signals that quantitative feedback in the form of a Rating was provided."
+			Property Unmuted Term 1 "v:Unmuted"				"The Unmuted action signals that the sound associated with an Entity was enabled or made audible. Inverse of Muted."
+			Property Created Term 1 "v:Created"				"The Created action signals that a DigitalResource was brought into existence. Inverse of Deleted."
+			Property Rewound Term 1 "v:Rewound"				"The Rewound action signals that a process was moved back from a current place or state to a previous one."
+			Property Paused Term 1 "v:Paused"				"The Paused action signals that some task or process was temporarily stopped. Inverse of Resumed."
+			Property TimedOut Term 1 "v:TimedOut"				"The TimedOut action signals that a user session was cancelled after a predetermined time interval passed without activity."
+			Property Retrieved Term 1 "v:Retrieved"				"The Retrieved action signals that an Entity was accessed or obtained from storage."
+			Property ChangedSpeed Term 1 "v:ChangedSpeed"				"The ChangedSpeed action signals an altering of the rate of some process associated with an Entity."
+			Property ClosedPopout Term 1 "v:ClosedPopout"				"The ClosedPopout action signals that a video popout was closed. Inverse of OpenedPopout."
+			Property Described Term 1 "v:Described"				"The Described action signals that an explanation or elucidation of an Entity was provided."
+			Property Deactivated Term 1 "v:Deactivated"				"The Deactivated action signals that some Entity was made inactive or stopped. Inverse of Activated."
+			Property ChangedVolume Term 1 "v:ChangedVolume"				"The ChangedVolume action signals an altering of the magnitude of sound originating from or related to some Entity."
+			Property Skipped Term 1 "v:Skipped"				"The Skipped action signals that some Entity was passed over without being fully examined or completed."
+			Property Attached Term 1 "v:Attached"				"The Attached action signals that some Entity was affixed to or included with some other Entity."
+			Property Recommended Term 1 "v:Recommended"				"The Recommended action signals that some Entity was given a favorable label or review."
+			Property Bookmarked Term 1 "v:Bookmarked"				"The Bookmarked action signals that some location of interest within an Entity was flagged or labeled."
+			Property EnteredFullScreen Term 1 "v:EnteredFullScreen"				"The EnteredFullScreen action signals that a view mode that uses all of the available display surface of a screen was engaged. Inverse of ExitedFullScreen."
+			Property Accepted Term 1 "v:Accepted"				"The Accepted action signals that an affirmative reply was given with regard to some Entity. Inverse of Declined."
+			Property Graded Term 1 "v:Graded"				"The Graded action signals that some work or Entity was given a score or rank."
+			Property Sent Term 1 "v:Sent"				"The Sent action signals that some Entity was transmitted or transferred."
+			Property Disliked Term 1 "v:Disliked"				"The Disliked action signals that a Person indicated disapproval of or negative feeling for an Entity. Inverse of Liked."
+			Property Highlighted Term 1 "v:Highlighted"				"The Highlighted action signals that some content was marked to emphasize it or make it more noticeable."
+			Property Modified Term 1 "v:Modified"				"The Modified action signals that an Entity was altered or changed."
+			Property Liked Term 1 "v:Liked"				"The Liked action signals that a Person indicated approval of or positive feeling for an Entity. Inverse of Disliked."
+			Property Added Term 1 "v:Added"				"The Added action signals that some Entity was combined with or appended to some other Entity or entities. Inverse of Removed."
+			Property Reviewed Term 1 "v:Reviewed"				"The Reviewed action signals that an Entity was looked over or appraised for its quality and completeness."
+
+	Package Profiles DataModel
+
+		Class Profile Enumeration false []	
+			Property GradingProfile Term 1 "v:GradingProfile"				"The Caliper Grading Profile models grading activities performed by an Agent, typically a Person or a SoftwareApplication. Grading a learner's Attempt of an AssignableDigitalResource and generating a Score is modeled as is viewing a Result."
+			Property GeneralProfile Term 1 "v:GeneralProfile"				"The Caliper General Profile provides a generic Event for describing learning or supporting activities that have yet to be modeled by Caliper. Any of the Caliper actions described in this specification can be used to describe the interaction between the actor and the object."
+			Property SurveyProfile Term 1 "v:SurveyProfile"				"The Caliper Survey Profile provides a vocabulary for describing events associated with a respondent's participation in online surveys. A key use case involves instrumenting platforms that provide online surveys that explore the student learning experience, student engagement, learning activities, learning progress, and learning performance. The profile models a Person, typically a respondent or a rater, participating in a survey in order to provide feedback on their learning and academic experiences."
+			Property ResourceManagementProfile Term 1 "v:ResourceManagementProfile"				"The Caliper Resource Management Profile models a Person managing a DigitalResource."
+			Property SessionProfile Term 1 "v:SessionProfile"				"The Caliper Session Profile models the creation and subsequent termination of a user session established by a Person interacting with a SoftwareApplication. A Session entity is described for representing the user session."
+			Property ReadingProfile Term 1 "v:ReadingProfile"				"The Caliper Reading Profile models activities associated with navigating to and viewing digital textual content. Caliper provides a number of entities representing digital content including a generic DigitalResource and DigitalResourceCollection along with Document, Chapter, Page, WebPage, Message and Frame."
+			Property AssignableProfile Term 1 "v:AssignableProfile"				"The Assignable Profile models activities associated with the assignment of digital content to a learner for completion according to specific criteria. Caliper provides a generic AssignableDigitalResource for describing the object of these activities as well as a learner's Attempt for recording a count of the number of times an assigned resource has been attempted."
+			Property AnnotationProfile Term 1 "v:AnnotationProfile"				"The Caliper Annotation Profile models activities related to the annotation of a DigitalResource. Creating a bookmark, highlighting selected text, sharing a resource, tagging a document, and viewing an annotation are modeled. The generated Annotation is also described and is subtyped for greater type specificity."
+			Property ToolUseProfile Term 1 "v:ToolUseProfile"				"The Caliper Tool Use Profile models an intended interaction between a user and a tool. In other words, when a Person utilizes a SoftwareApplication in a manner that the application determines to be its intended use for learning, an application that implements the Tool Use Profile can emit a ToolUseEvent indicating such usage."
+			Property SearchProfile Term 1 "v:SearchProfile"				"The Caliper Search Profile models an actor, typically a learner, querying a resource for information. The profile provides a SearchEvent and a Searched action for describing information retrieval activities. An optional SearchResponse entity can be employed to describe the Query submitted by a user as well as any searchResults returned as a result of the search."
+			Property AssessmentProfile Term 1 "v:AssessmentProfile"				"The Caliper Assessment Profile models assessment-related activities including interactions with individual assessment items. Caliper provides Assessment and AssessmentItem entities for describing the object of these activities, as well as a learner's Attempt for recording a count of the number of times an assigned resource has been attempted. Five Response types are also provided for capturing individual item responses."
+			Property ToolLaunchProfile Term 1 "v:ToolLaunchProfile"				"The Caliper Tool Launch Profile is intended to capture the utilization of learning tools from a centralized location, such as an LTI Tool Platform (often an LMS). As such, it is distinct from the Caliper Tool Use Profile, also defined in this specification, which captures tool usage as reported by the individual tools themselves (i.e. decentralized capture)."
+			Property ForumProfile Term 1 "v:ForumProfile"				"The Caliper Forum Profile models learners and others participating in online discussion forums. Forums typically encompass one or more threads or topics to which members can subscribe, post messages and reply to other messages if a threaded discussion is permitted. Caliper provides Forum, Thread, and Message entities for representing the object of these activities."
+			Property MediaProfile Term 1 "v:MediaProfile"				"The Caliper Media Profile models interactions between learners and rich content such as audio, images and video. Implementers can leverage a number of media-related entities including AudioObject, ImageObject, and VideoObject, each subtyped from a generic MediaObject. A MediaLocation entity is also provided in order to represent the current location in an audio or video stream."
+			Property FeedbackProfile Term 1 "v:FeedbackProfile"				"The Caliper Feedback Profile models a Person providing informal feedback on a Entity, typically a piece of student work. The profile provides a FeedbackEvent along with Commented and Ranked actions for describing feedback activities. The Rating entity is used to capture quantitative feedback while the Comment entity is used to capture qualitative feedback."
