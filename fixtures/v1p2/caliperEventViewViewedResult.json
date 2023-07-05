@@ -1,0 +1,63 @@
+{
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p2",
+  "id": "urn:uuid:bc780773-ee1e-49f6-ab2b-fe16eb391dd8",
+  "type": "ViewEvent",
+  "profile": "GradingProfile",
+  "actor": {
+    "id": "https://example.edu/users/554433",
+    "type": "Person"
+  },
+  "action": "Viewed",
+  "object": {
+    "id": "https://example.edu/terms/201601/courses/7/sections/1/assess/1/users/554433/attempts/1/results/1",
+    "type": "Result",
+    "attempt": {
+      "id": "https://example.edu/terms/201601/courses/7/sections/1/assess/1/users/554433/attempts/1",
+      "type": "Attempt",
+      "assignee": {
+        "id": "https://example.edu/users/554433",
+        "type": "Person"
+      },
+      "assignable": {
+        "id": "https://example.edu/terms/201601/courses/7/sections/1/assess/1",
+        "type": "Assessment"
+      },
+      "count": 1,
+      "dateCreated": "2016-11-15T10:05:00.000Z",
+      "startedAtTime": "2016-11-15T10:05:00.000Z",
+      "endedAtTime": "2016-11-15T10:55:30.000Z",
+      "duration": "PT50M30S"
+    },
+    "maxResultScore": 15.0,
+    "resultScore": 10.0,
+    "scoredBy": {
+      "id": "https://example.edu/autograder",
+      "type": "SoftwareApplication",
+      "dateCreated": "2016-11-15T10:55:58.000Z"
+    },
+    "comment": "Consider retaking the assessment.",
+    "dateCreated": "2016-11-15T10:56:00.000Z"
+  },
+  "eventTime": "2018-11-12T10:15:00.000Z",
+  "edApp": "https://example.edu",
+  "group": {
+    "id": "https://example.edu/terms/201801/courses/7/sections/1",
+    "type": "CourseSection",
+    "courseNumber": "CPS 435-01",
+    "academicSession": "Fall 2018"
+  },
+  "membership": {
+    "id": "https://example.edu/terms/201801/courses/7/sections/1/rosters/1",
+    "type": "Membership",
+    "member": "https://example.edu/users/554433",
+    "organization": "https://example.edu/terms/201801/courses/7/sections/1",
+    "roles": [ "Learner" ],
+    "status": "Active",
+    "dateCreated": "2018-08-01T06:00:00.000Z"
+  },
+  "session": {
+    "id": "https://example.edu/sessions/f095bbd391ea4a5dd639724a40b606e98a631823",
+    "type": "Session",
+    "startedAtTime": "2018-11-12T10:00:00.000Z"
+  }
+}
