@@ -1,0 +1,19 @@
+{
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p2/NotificationProfile-extenstion",
+  "id": "http://example.edu/notices/1",
+  "type": "Notice",
+  "name": "User subject line plain text",
+  "dateCreated": "2016-11-15T10:15:30.000Z",
+  "creators": [
+    {
+      "id": "https://example.edu/users/778899",
+      "type": "Person"
+    }
+  ],
+  "body": "Notice body plain text.",
+  "isPartOf": {
+    "@context": "http://purl.imsglobal.org/ctx/caliper/v1p2/NotificationProfile-extenstion",
+    "id": "https://example.edu/research-contexts/1",
+    "type": "ResearchContext"
+  }
+}

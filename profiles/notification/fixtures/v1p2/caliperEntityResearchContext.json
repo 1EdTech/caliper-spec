@@ -1,0 +1,5 @@
+{
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p2/NotificationProfile-extenstion",
+  "id": "https://example.edu/research-contexts/1",
+  "type": "ResearchContext"
+}

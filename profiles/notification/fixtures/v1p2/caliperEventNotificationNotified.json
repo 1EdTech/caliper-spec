@@ -1,0 +1,76 @@
+{
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p2/NotificationProfile-extenstion",
+  "id": "",
+  "type": "NotificationEvent",
+  "profile": "NotificationProfile",
+  "actor": {
+    "id": "https://example.edu/users/778899",
+    "type": "Person"
+  },
+  "action": "Notified",
+  "object": {
+    "id": "https://example.edu/users/223344",
+    "type": "Person"
+  },
+  "generated": {
+    "@context": "http://purl.imsglobal.org/ctx/caliper/v1p2/NotificationProfile-extenstion",
+    "id": "http://example.edu/notifications/1",
+    "type": "Notification",
+    "dateCreated": "2016-11-15T10:15:30.000Z",
+    "dateSent": "2016-11-15T10:15:40.000Z",
+    "medium": "Email",
+    "notice": {
+      "@context": "http://purl.imsglobal.org/ctx/caliper/v1p2/NotificationProfile-extenstion",
+      "id": "http://example.edu/notices/1",
+      "type": "Notice",
+      "name": "User subject line plain text",
+      "dateCreated": "2016-11-15T10:15:30.000Z",
+      "creators": [
+        {
+          "id": "https://example.edu/users/778899",
+          "type": "Person"
+        }
+      ],
+      "body": "Notice body plain text.",
+      "isPartOf": {
+        "@context": "http://purl.imsglobal.org/ctx/caliper/v1p2/NotificationProfile-extenstion",
+        "id": "https://example.edu/research-contexts/1",
+        "type": "ResearchContext"
+      }
+    },
+    "recipient": {
+      "id": "https://example.edu/users/223344",
+      "type": "Person"
+    },
+    "sender": {
+      "id": "https://example.edu/users/778899",
+      "type": "Person"
+    }
+  },
+  "eventTime": "2016-11-15T10:15:40.000Z",
+  "edApp": {
+    "id": "https://example.edu",
+    "type": "SoftwareApplication",
+    "version": "v2"
+  },
+  "group": {
+    "id": "https://example.edu/terms/201601/courses/7/sections/1",
+    "type": "CourseSection",
+    "courseNumber": "CPS 435-01",
+    "academicSession": "Fall 2016"
+  },
+  "membership": {
+    "id": "https://example.edu/terms/201601/courses/7/sections/1/rosters/1",
+    "type": "Membership",
+    "member": "https://example.edu/users/778899",
+    "organization": "https://example.edu/terms/201601/courses/7/sections/1",
+    "roles": [ "Instructor" ],
+    "status": "Active",
+    "dateCreated": "2016-08-01T06:00:00.000Z"
+  }
+  "session": {
+    "id": "https://example.edu/sessions/1f6442a482de72ea6ad134943812bff564a76259",
+    "type": "Session",
+    "startedAtTime": "2016-11-15T10:00:00.000Z"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p2/NotificationProfile-extenstion",
+  "id": "http://example.edu/notifications/1",
+  "type": "Notification",
+  "dateCreated": "2016-11-15T10:15:30.000Z",
+  "dateSent": "2016-11-15T10:15:40.000Z",
+  "medium": "Email",
+  "notice": {
+    "@context": "http://purl.imsglobal.org/ctx/caliper/v1p2/NotificationProfile-extenstion",
+    "id": "http://example.edu/notices/1",
+    "type": "Notice",
+    "name": "User subject line plain text",
+    "dateCreated": "2016-11-15T10:15:30.000Z",
+    "creators": [
+      {
+        "id": "https://example.edu/users/778899",
+        "type": "Person"
+      }
+    ],
+    "body": "Notice body plain text.",
+    "isPartOf": {
+      "@context": "http://purl.imsglobal.org/ctx/caliper/v1p2",
+      "id": "https://example.edu/research-contexts/1",
+      "type": "ResearchContext"
+    }
+  },
+  "recipient": {
+      "id": "https://example.edu/users/223344",
+      "type": "Person"
+  },
+  "sender": {
+      "id": "https://example.edu/users/778899",
+      "type": "Person"
+  }
+}
