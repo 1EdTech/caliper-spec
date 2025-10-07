@@ -1,17 +1,16 @@
+<p>A Caliper <code>Notification</code> entity represents a <code>Notice</code> prepared for delivery to a recipient by a user or system.</p>
 
-<p>A Caliper <code>Notice</code> entity represents a notable remark or alert that a user, or system, sends to another user to draw their attention to an important matter.</p>
-
-<p>A <code>Notice</code> consists of the data of a notable remark to send; it can be dispatched to more than one user. When dispatched to a user, it must be contained within a <a href="#Notification">Notification</a>" envelope.</p>
+<p>A <code>Notification</code> consists of the <code>Notice</code> data sent, the sender and recipient for the notification, the medium used to send the notification, and the time of creation and sending.</p>
 
 <dl>
     <dt>IRI</dt>
-    <dd><a href="#Notice">http://purl.imsglobal.org/caliper/Notice</a></dd>
+    <dd><a href="#Notice">http://purl.imsglobal.org/caliper/Notification</a></dd>
     <dt>Term</dt>
-    <dd>Notice</dd>
+    <dd>Notification</dd>
     <dt>Supertype</dt>
     <dd><a href="https://www.imsglobal.org/spec/caliper/v1p2#entity">Entity</a></dd>
     <dt>Properties</dt>
-    <dd><code>Notice</code> inherits all properties defined by its supertype
+    <dd><code>Notification</code> inherits all properties defined by its supertype
         <a href="https://www.imsglobal.org/spec/caliper/v1p2#entity">Entity</a>, of which <code>id</code> and <code>type</code> are required.
         Additional type restrictions are described below:
     </dd>
@@ -30,34 +29,43 @@
         <tr>
             <td>type</td>
             <td><a href="https://www.imsglobal.org/spec/caliper/v1p2#termDef">Term</a></td>
-            <td>The string value MUST be set to the <a href="https://www.imsglobal.org/spec/caliper/v1p2#termDef">Term</a> <em>Notice</em>.</td>
+            <td>The string value MUST be set to the <a href="https://www.imsglobal.org/spec/caliper/v1p2#termDef">Term</a> <em>Notification</em>.</td>
             <td>Required</td>
         </tr>
         <tr>
-            <td>body</td>
+            <td>dateSent</td>
             <td>string</td>
-            <td>The plain-text content of the notice.</td>
+            <td>An ISO 8601 date and time value expressed with millisecond precision that describes when the <a href="#Notification">Notification</a> was sent to the recipient. The value MUST be expressed using the format YYYY-MM-DDTHH:mm:ss.SSSZ set to UTC with no offset specified.</td>
             <td>Required</td>
         </tr>
         <tr>
-            <td>creators</td>
-            <td>Array</td>
-            <td>An ordered collection of <a href="https://www.imsglobal.org/spec/caliper/v1p2#agent">Agent</a> entities that created this notice. Each array item MUST be expressed either as an object or as a string corresponding to this item's <a href="https://www.imsglobal.org/spec/caliper/v1p2#iriDef">IRI</a>.
+            <td>notice</td>
+            <td> <a href="#Notice">Notice</a> |
+                <a href="https://www.imsglobal.org/spec/caliper/v1p2#iriDef">IRI</a>
             </td>
-            <td>Optional</td>
+            <td>The <code>Notice</code> containing the actual content of the notification sent to the recipient. The <code>notice</code> value MUST be expressed either as an object or as a string corresponding to the object's <a href="https://www.imsglobal.org/spec/caliper/v1p2#iriDef">IRI</a>.</td>
+            <td>Required</td>
         </tr>
         <tr>
-            <td>isPartOf</td>
-            <td> <a href="#ResearchContext">ResearchContext</a> |
-                 <a href="https://www.imsglobal.org/spec/caliper/v1p2#iriDef">IRI</a>
+            <td>recipient</td>
+            <td> <a href="https://www.imsglobal.org/spec/caliper/v1p2#person">Person</a> |
+                <a href="https://www.imsglobal.org/spec/caliper/v1p2#iriDef">IRI</a>
             </td>
-            <td>The <code>ResearchContext</code> describing the experimental condition or intervention that comprises this notification. The <code>isPartOf</code> value MUST be expressed either as an object or as a string corresponding to the research context's <a href="https://www.imsglobal.org/spec/caliper/v1p2#iriDef">IRI</a>.</td>
-            <td>Optional</td>
+            <td>The <code>Person</code> to receive the notification. The <code>recipient</code> value MUST be expressed either as an object or as a string corresponding to the object's <a href="https://www.imsglobal.org/spec/caliper/v1p2#iriDef">IRI</a>.</td>
+            <td>Required</td>
         </tr>
         <tr>
-            <td>name</td>
+            <td>medium</td>
             <td>string</td>
-            <td>The plain-text content of the notice's subject.</td>
+            <td>A string value comprising a word or phrase identifying the medium used to send the notification (for example, "Email" or "SMS").</td>
+            <td>Optional</td>
+        </tr>
+        <tr>
+        <td>sender</td>
+        <td> <a href="https://www.imsglobal.org/spec/caliper/v1p2#agent">Agent</a> |
+            <a href="https://www.imsglobal.org/spec/caliper/v1p2#iriDef">IRI</a>
+            </td>
+            <td>The <code>Agent</code> identified as the sender of the notification. The <code>sender</code> value MUST be expressed either as an object or as a string corresponding to the object's <a href="https://www.imsglobal.org/spec/caliper/v1p2#iriDef">IRI</a>.</td>
             <td>Optional</td>
         </tr>
     </tbody>

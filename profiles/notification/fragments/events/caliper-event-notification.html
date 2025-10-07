@@ -1,0 +1,59 @@
+<p>A Caliper <a href="#NotificationEvent">NotificationEvent</a> models the act of sending a notice to a user to notify them of some important circumstance worthy of their attention.</p>
+
+<dl>
+    <dt>IRI</dt>
+    <dd><a href="https://purl.imsglobal.org/caliper/NotificationEvent">https://purl.imsglobal.org/caliper/NotificationEvent</a></dd>
+    <dt>Term</dt>
+    <dd>NotificationEvent</dd>
+    <dt>Supertype</dt>
+    <dd><a href="https://www.imsglobal.org/spec/caliper/v1p2#event">Event</a></dd>
+    <dt>Properties</dt>
+    <dd>The <code>NotificationEvent</code> inherits all properties defined by its supertype <a href="https://www.imsglobal.org/spec/caliper/v1p2#event">Event</a>, of which <code>id</code>, <code>type</code>, <code>actor</code>, <code>action</code>, <code>object</code>, and <code>eventTime</code> are required. Profile-specific type restrictions are described below:
+    </dd>
+</dl>
+
+<table>
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Disposition</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>type</td>
+            <td><a href="https://www.imsglobal.org/spec/caliper/v1p2#termDef">Term</a></td>
+            <td>The string value MUST be set to the <a href="https://www.imsglobal.org/spec/caliper/v1p2#termDef">Term</a> <em>NotificationEvent</em>.</td>
+            <td>Required</td>
+        </tr>
+        <tr>
+            <td>actor</td>
+            <td><a href="https://www.imsglobal.org/spec/caliper/v1p2#agent">Agent</a> |<a href="https://www.imsglobal.org/spec/caliper/v1p2#person">Person</a> | <a href="https://www.imsglobal.org/spec/caliper/v1p2#iriDef">IRI</a></td>
+            <td>The <a href="https://www.imsglobal.org/spec/caliper/v1p2#agent">Agent</a> or <a href="https://www.imsglobal.org/spec/caliper/v1p2#person">Person</a> that initiated the <code>action</code>. If the action is <a href="#notified">Notified</a> then the <code>actor</code> value MUST be expressed as an <a href="https://www.imsglobal.org/spec/caliper/v1p2#agent">Agent</a>. If the action is <a href="#viewed">Viewed</a> or <a href="#dismissed">Dismissed</a> then the <code>actor</code> value MUST be expressed as a <a href="https://www.imsglobal.org/spec/caliper/v1p2#person">Person</a>. The <code>actor</code> value MUST be expressed either as an object or as a string corresponding to the object’s <a href="https://www.imsglobal.org/spec/caliper/v1p2#iriDef">IRI</a>.
+            </td>
+            <td>Required</td>
+        </tr>
+        <tr>
+            <td>action</td>
+            <td><a href="https://www.imsglobal.org/spec/caliper/v1p2#termDef">Term</a></td>
+            <td>The action or predicate that binds the <code>actor</code> or subject to the <code>object</code>. The value range is limited to the <a href="#notified">Notified</a>, <a href="#viewed">Viewed</a>, and <a href="#dismissed">Dismissed</a> actions only.
+            </td>
+            <td>Required</td>
+        </tr>
+        <tr>
+            <td>object</td>
+            <td><a href="https://www.imsglobal.org/spec/caliper/v1p2#person">Person</a> | <a href="https://www.imsglobal.org/spec/caliper/v1p2#notification">Notification</a> | <a href="https://www.imsglobal.org/spec/caliper/v1p2#iriDef">IRI</a></td>
+            <td>The <a href="https://www.imsglobal.org/spec/caliper/v1p2#person">Person</a> or <a href="https://www.imsglobal.org/spec/caliper/v1p2#notification">Notification</a> that is the object of the action. If the action is <a href="#notified">Notified</a> then the <code>object</code> value MUST be expressed as a <a href="https://www.imsglobal.org/spec/caliper/v1p2#person">Person</a>. If the action is <a href="#viewed">Viewed</a> or <a href="#dismissed">Dismissed</a> then the <code>object</code> value MUST be expressed as a <a href="https://www.imsglobal.org/spec/caliper/v1p2#notification">Notification</a>. The <code>object</code> value MUST be expressed either as an object or as a string corresponding to the object’s <a href="https://www.imsglobal.org/spec/caliper/v1p2#iriDef">IRI</a>.
+            </td>
+            <td>Required</td>
+        </tr>
+        <tr>
+            <td>generated</td>
+            <td><a href="https://www.imsglobal.org/spec/caliper/v1p2#notification">Notification</a> | <a href="https://www.imsglobal.org/spec/caliper/v1p2#iriDef">IRI</a></td>
+            <td>The <a href="https://www.imsglobal.org/spec/caliper/v1p2#notification">Notification</a> sent to the <code>recipient</code>. The <code>generated</code> value MUST be expressed either as an object or as a string corresponding to the object’s <a href="https://www.imsglobal.org/spec/caliper/v1p2#iriDef">IRI</a>.</td>
+            <td>Required (<a href="#notified">Notified</a> action only)</td>
+        </tr>
+    </tbody>
+</table>

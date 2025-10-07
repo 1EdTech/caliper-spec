@@ -3,15 +3,18 @@
 
 <p>A <code>Notice</code> consists of the data of a notable remark to send; it can be dispatched to more than one user. When dispatched to a user, it must be contained within a <a href="#Notification">Notification</a>" envelope.</p>
 
+
+<p>A Caliper <code>ResearchContext</code> entity identifies the educational research context within which a notification occurs, allowing for subsequent collation of all notification event data that pertains to the context.</p>
+
 <dl>
     <dt>IRI</dt>
-    <dd><a href="#Notice">http://purl.imsglobal.org/caliper/Notice</a></dd>
+    <dd><a href="ResearchContext">http://purl.imsglobal.org/caliper/ResearchContext</a></dd>
     <dt>Term</dt>
-    <dd>Notice</dd>
+    <dd>ResearchContext</dd>
     <dt>Supertype</dt>
     <dd><a href="https://www.imsglobal.org/spec/caliper/v1p2#entity">Entity</a></dd>
     <dt>Properties</dt>
-    <dd><code>Notice</code> inherits all properties defined by its supertype
+    <dd><code>ResearchContext</code> inherits all properties defined by its supertype
         <a href="https://www.imsglobal.org/spec/caliper/v1p2#entity">Entity</a>, of which <code>id</code> and <code>type</code> are required.
         Additional type restrictions are described below:
     </dd>
@@ -30,35 +33,8 @@
         <tr>
             <td>type</td>
             <td><a href="https://www.imsglobal.org/spec/caliper/v1p2#termDef">Term</a></td>
-            <td>The string value MUST be set to the <a href="https://www.imsglobal.org/spec/caliper/v1p2#termDef">Term</a> <em>Notice</em>.</td>
+            <td>The string value MUST be set to the <a href="https://www.imsglobal.org/spec/caliper/v1p2#termDef">Term</a> <em>ResearchContext</em>.</td>
             <td>Required</td>
-        </tr>
-        <tr>
-            <td>body</td>
-            <td>string</td>
-            <td>The plain-text content of the notice.</td>
-            <td>Required</td>
-        </tr>
-        <tr>
-            <td>creators</td>
-            <td>Array</td>
-            <td>An ordered collection of <a href="https://www.imsglobal.org/spec/caliper/v1p2#agent">Agent</a> entities that created this notice. Each array item MUST be expressed either as an object or as a string corresponding to this item's <a href="https://www.imsglobal.org/spec/caliper/v1p2#iriDef">IRI</a>.
-            </td>
-            <td>Optional</td>
-        </tr>
-        <tr>
-            <td>isPartOf</td>
-            <td> <a href="#ResearchContext">ResearchContext</a> |
-                 <a href="https://www.imsglobal.org/spec/caliper/v1p2#iriDef">IRI</a>
-            </td>
-            <td>The <code>ResearchContext</code> describing the experimental condition or intervention that comprises this notification. The <code>isPartOf</code> value MUST be expressed either as an object or as a string corresponding to the research context's <a href="https://www.imsglobal.org/spec/caliper/v1p2#iriDef">IRI</a>.</td>
-            <td>Optional</td>
-        </tr>
-        <tr>
-            <td>name</td>
-            <td>string</td>
-            <td>The plain-text content of the notice's subject.</td>
-            <td>Optional</td>
         </tr>
     </tbody>
 </table>

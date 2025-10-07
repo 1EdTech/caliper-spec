@@ -64,10 +64,10 @@
     "type": "Membership",
     "member": "https://example.edu/users/778899",
     "organization": "https://example.edu/terms/201601/courses/7/sections/1",
-    "roles": [ "Instructor" ],
+    "roles": ["Instructor"],
     "status": "Active",
     "dateCreated": "2016-08-01T06:00:00.000Z"
-  }
+  },
   "session": {
     "id": "https://example.edu/sessions/1f6442a482de72ea6ad134943812bff564a76259",
     "type": "Session",

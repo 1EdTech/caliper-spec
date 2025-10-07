@@ -4,8 +4,8 @@
   "type": "NotificationEvent",
   "profile": "NotificationProfile",
   "actor": {
-      "id": "https://example.edu/users/223344",
-      "type": "Person"
+    "id": "https://example.edu/users/223344",
+    "type": "Person"
   },
   "action": "Dismissed",
   "object": "http://example.edu/notifications/1",
@@ -22,7 +22,7 @@
     "type": "Membership",
     "member": "https://example.edu/users/554433",
     "organization": "https://example.edu/terms/201601/courses/7/sections/1",
-    "roles": [ "Learner" ],
+    "roles": ["Learner"],
     "status": "Active",
     "dateCreated": "2016-08-01T06:00:00.000Z"
   },
